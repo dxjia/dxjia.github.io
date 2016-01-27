@@ -12,7 +12,7 @@ menu:
   关于我: /about/
 
 # Link to your avatar | 填写头像地址
-avatar: /uploads/avatar.png
+avatar: /img/avatar.jpg
 
 # Small icon of Your site | 站点小图标地址
 favicon: /favicon.png
@@ -26,7 +26,7 @@ favicon: /favicon.png
 subnav:
   Email: "jdxwind@dxjia.cn"
   #新浪微博: "sina weibo"
-  GitHub: "#"
+  GitHub: "https://github.com/dxjia"
   #V2EX: "#"
   RSS: "/atom.xml"
   #知乎: "zhihu"
@@ -82,20 +82,20 @@ youyan:
 ## "5": show images form bg-1.jpg to bg-5.jpg in `/yelee/source/background/`
 ## "5": 显示`/yelee/source/background/`文件夹中 bg-1.jpg 到 bg-5.jpg 这5张图片
 ## "0": white-gray background | 淳朴灰白背景
-background_image: 5
+background_image: 9
 
 highlight_style:
-  #on: true
-  inline_code: 1  # Value: 0 - 9 可选
-  code_block: 1  # Value: 0 - 4 
+  on: true
+  inline_code: 0  # Value: 0 - 9 可选
+  code_block: 3  # Value: 0 - 4 
   # Set inline_code to style highlight text
   # Chose a highlight theme for code block
   # 通过 inline_code 切换内置文本高亮样式
   # 通过 code_block 切换内置代码高亮配色主题
 
 blockquote_style:
-  #on: true
-  blockquote: 1  # Value: 0 - 7 可选
+  on: true
+  blockquote: 2  # Value: 0 - 7 可选
   # 自定义文章「引用部分」的样式
 
 # 左边栏宽度 px
@@ -103,11 +103,11 @@ left_col_width: 300
 
 # 目录中标题不换行
 # Keep TOC title on the same line | 
-toc_nowrap: false
+toc_nowrap: true
 
 # 自定义"阅读全文"链接按钮的显示文字
 # Customize the text on excerpt link
-excerpt_link: more
+excerpt_link: 阅读全文
 
 # 是否显示边栏中的搜索框（仅样式，未添加搜索功能）
 # Search Box in left column
@@ -135,7 +135,7 @@ friends:
 #friends: false
 
 #是否开启“关于我”。
-aboutme: 专注于前端
+aboutme: 专注于移动开发
 #aboutme: false
 
 # 是否在新窗口打开链接

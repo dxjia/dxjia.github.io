@@ -1,7 +1,9 @@
-title: About
+title: 关于我 & 留言
 date: 2016-01-27 17:27:16
-comments: false
+comments: true
 ---
 
 # 关于我
+
 `不管生活多么艰难，我们都要坚强。`
+

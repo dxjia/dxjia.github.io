@@ -1,6 +1,7 @@
 title: ContentProvider详解
 date: 2016-01-27 19:28:45
 tags: [Android,Provider]
+categories: 技术学习
 description: 本文将从跨进程(IPC)调用的角度来分析Android中是怎么完成一次跨进程的provider数据访问的。。。
 ---
 本文将从跨进程(IPC)调用的角度来分析源码，详细说明Android中是怎么完成了一次跨进程的provider数据访问的，基于android6.0。。。

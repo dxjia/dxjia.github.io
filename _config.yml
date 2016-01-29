@@ -44,9 +44,10 @@ highlight:
   tab_replace:
 
 # Category & Tag
-default_category: uncategorized
-category_map:
-tag_map:
+default_category: 技术开发
+default_tag: Android
+category_map: [技术开发, 杂谈]
+tag_map: [Android]
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
@@ -64,6 +65,17 @@ pagination_dir: page
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
 theme: yelee
+
+# RSS
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+
+# site map
+sitemap:
+  path: sitemap.xml
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html

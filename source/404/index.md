@@ -59,7 +59,7 @@ permalink: /404
 ***
 
 <div class="pic">
-<img src="http://7xqitw.com1.z0.glb.clouddn.com/blog-res-luffy-fight.gif" title="Monkey.D.Luffy">
+<img src="http://7xqitw.com1.z0.glb.clouddn.com/blog-res-boluotou.gif" title="Roronoa Zoro">
 </div>
 
 <p class="center">很抱歉，您所访问的地址不存在: </p>

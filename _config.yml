@@ -77,6 +77,10 @@ feed:
 sitemap:
   path: sitemap.xml
 
+# for baidu site map
+baidusitemap:
+  path: baidusitemap.xml
+
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:

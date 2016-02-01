@@ -1,8 +1,8 @@
-title: phone-analysis
+title: Android5.0 Phone框架分析
 date: 2016-01-29 20:35:12
 tags: [Android, Phone]
 categories: 技术学习
-description: Android5.0 Phone框架分析
+description: 本文从源码角度分析Android phone框架的启动与初始化，总结5.0中新增的framework部分对于多模Phone的支持。
 ---
 
 # persistent属性
@@ -10,30 +10,28 @@ description: Android5.0 Phone框架分析
 　　AM首先在systemready后去PM(PackageManagerService)中查找设置了android:persistent的应用，代码如下：
 ```java
 public void systemReady(final Runnable goingCallback) {
-............
-        synchronized (this) {
-            if (mFactoryTest != FactoryTest.FACTORY_TEST_LOW_LEVEL) {
-                try {
-                    List apps = AppGlobals.getPackageManager().
-                        getPersistentApplications(STOCK_PM_FLAGS);
-                    if (apps != null) {
-                        int N = apps.size();
-                        int i;
-                        for (i=0; i<N; i++) {
-                            ApplicationInfo info
-                                = (ApplicationInfo)apps.get(i);
-                            if (info != null &&
-                                    !info.packageName.equals("android")) {
-                                addAppLocked(info, false, null /* ABI override */);
-                           }
+    ...
+    synchronized (this) {
+        if (mFactoryTest != FactoryTest.FACTORY_TEST_LOW_LEVEL) {
+            try {
+                List apps = AppGlobals.getPackageManager().
+                    getPersistentApplications(STOCK_PM_FLAGS);
+                if (apps != null) {
+                    int N = apps.size();
+                    int i;
+                    for (i=0; i<N; i++) {
+                        ApplicationInfo info = (ApplicationInfo)apps.get(i);
+                        if (info != null && !info.packageName.equals("android")) {
+                            addAppLocked(info, false, null /* ABI override */);
                         }
                     }
-                } catch (RemoteException ex) {
-                    // pm is in same process, this will never happen.
                 }
+            } catch (RemoteException ex) {
+                // pm is in same process, this will never happen.
             }
-........
-
+        }
+    }
+    ...
 }
 ```
 addAppLocked方法会检测应用是否有起来，如果没有将启动，这样persist属性的应用就跑起来了。注意上面的判断：

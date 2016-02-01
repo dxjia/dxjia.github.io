@@ -1,4 +1,5 @@
 title: {{ title }}
 date: {{ date }}
-tags:
+tags: [Android, Java]
+categories: 技术开发
 ---

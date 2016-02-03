@@ -1,7 +1,7 @@
 title: 对Android蓝牙UUID的理解
 date: 2016-01-29 15:42:13
 tags: [Android, Bluetooth, UUID]
-categories: 技术学习
+categories: Programmer
 description: UUID是根据一定算法，计算得到的一长串数字，这个数字的产生使用了多种元素，所以使得这串数字不会重复，每次生成都会产生不一样的序列，所以可以用来作为唯一标识。
 ---
 # UUID

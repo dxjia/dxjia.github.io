@@ -2,7 +2,7 @@ title: 巧用软连接(快捷方式)实现不同项目代码共享
 tags:
   - Android
   - Windows
-categories: 技术学习
+categories: Programmer
 date: 2016-02-02 08:51:05
 ---
 情形是这样的：

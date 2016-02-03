@@ -1,7 +1,7 @@
 title: Android5.0 Phone框架分析
 date: 2016-01-29 20:35:12
 tags: [Android, Phone]
-categories: 技术学习
+categories: Programmer
 description: 本文从源码角度分析Android phone框架的启动与初始化，总结5.0中新增的framework部分对于多模Phone的支持。
 ---
 

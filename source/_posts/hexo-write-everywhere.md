@@ -2,7 +2,7 @@ title: Hexo利用Github分支在不同电脑上写博客
 date: 2016-01-27 20:29:13
 tags: [hexo, 博客]
 description: 使用Github Page的Hexo博客如何才能做到在不同电脑上写博客？
-categories: 技术学习
+categories: Programmer
 ---
 Hexo是一个很好的开源博客框架，支持Markdown的写作方式，并且可以与Github Page协作轻松搭建博客，非常适合展示性的个人博客。Hexo通过将Markdown文件编译成html文件，然后将html文件直接部署到网站上，所以被称作静态博客，因为直接就是访问的最终的html文件，不会有PHP那样的中间处理，所以对浏览器来讲会比较快。
 <!--more-->

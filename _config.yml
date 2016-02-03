@@ -44,9 +44,9 @@ highlight:
   tab_replace:
 
 # Category & Tag
-default_category: 技术开发
+default_category: Programmer
 default_tag: Android
-category_map: [技术开发, 杂谈]
+category_map: [Programmer, Life]
 tag_map: [Android]
 
 # Date / Time format

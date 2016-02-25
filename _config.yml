@@ -65,6 +65,7 @@ pagination_dir: page
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
 theme: yelee
+#theme: next
 
 # RSS
 feed:

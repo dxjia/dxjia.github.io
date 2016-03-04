@@ -142,12 +142,16 @@ if (mCarrierPrivilegeRules == null && mCardState == CardState.CARDSTATE_PRESENT)
 ```
 注释里对该类的功能进行了讲解，而且给出了使用到的icc card文件读取和解析的spec规范文档 `GPD_SE_Access_Control_v1.0.20.pdf`，可惜他给的链接无效了，可以在百度文库上找到该spec，地址: [GPD_SE_Access_Control_v1.0.20.pdf](http://wenku.baidu.com/link?url=4BZ92HfppXlHIc1jsKw0ob7n0ppdN68qlUq96Yosl124xDM5ab3a_zs84vQSx6bLAONKsN0BQTvDBwRc300X4H_tKnuW2dcY3UhaGxHRdcK)
 　　具体读取icc文件和解析这里就不分析了，都是依照spec的实现。只说明下几个接口和内部变量：
-> - **`AccessRule`** : 内部类，用来保存解析到的rules，内部维护单个rule的package name和签名hash值.
-- **`List<AccessRule> mAccessRules`** : 保存所有的rules在list，看来可以支持多个运营商指定app.
-- **`areCarrierPriviligeRulesLoaded()`** : 是否已经准备好.
-- **`getCarrierPrivilegeStatus()`** : 验证指定的package name的app是否有运营商授权.
-- **`getCarrierPrivilegeStatusForCurrentTransaction()** : 验证当前进程里是否存在有运营商授权的app（多个app可以通过共享id的形式运行在同一个进程里.
-- **`getCarrierPackageNamesForIntent()`** : 通过从package manager中取出所有符合传入的Intent的app，也就是取出所有可以处理传入的Intent的app，并检查这些app里是否有符合运营商授权的，并返回符合的list.
+
+| Field | Note |
+| :-------- | :--------|
+| AccessRule | 内部类，用来保存解析到的rules，内部维护单个rule的package name和签名hash值. |
+| List<AccessRule> mAccessRules | 保存所有的rules在list，看来可以支持多个运营商指定app. |
+|areCarrierPriviligeRulesLoaded | 是否已经准备好. |
+|getCarrierPrivilegeStatus | 验证当前进程里是否存在有运营商授权的app（多个app可以通过共享id的形式运行在同一个进程里. |
+|getCarrierPrivilegeStatusForCurrentTransaction | 验证当前进程里是否存在有运营商授权的app. |
+|getCarrierPackageNamesForIntent | 通过从package manager中取出所有符合传入的Intent的app，也就是取出所有可以处理传入的Intent的app，并检查这些app里是否有符合运营商授权的，并返回符合的list. |
+
 
 ## 具体场景
 　　以一条新短信的接收为例：
@@ -241,9 +245,13 @@ if (mCarrierPrivilegeRules == null && mCardState == CardState.CARDSTATE_PRESENT)
 
 所以到目前为止，我们可以看到总共有3种SMS的广播类型，`SMS_FILTER_ACTION`，`SMS_DELIVER_ACTION`以及`SMS_RECEIVED_ACTION`;
 下面整理出了他们的区别：
-> - **`SMS_FILTER_ACTION`** : 运营商SMS APP专用，第一优先级发送，运营商APP可以修改这个短信的任何内容，也可以直接丢弃掉这个短信不让系统保存和继续广播。
-- **`SMS_DELIVER_ACTION`** : 第二优先级的广播，该广播会被显式指定给一个default SMS APP接受，而且系统又通过一定的机制保证了同一时刻只会有 <= 1个default SMS APP, 所以这个广播最多只会发送给1个APP，这个APP负责存储和通知新短信。
-- **`SMS_RECEIVED_ACTION`** : 最低优先级广播，在 SMS_DELIVER_ACTION 广播结束后触发，不指定APP Name，所以声明了该广播的所有APP都可以接收到新短信广播，注册该广播的应用并不被期望会去存储这条短信到短信数据库。
+
+| Actions | Note|
+| :-------- | :--------|
+| SMS_FILTER_ACTION | 运营商SMS APP专用，第一优先级发送，运营商APP可以修改这个短信的任何内容，也可以直接丢弃掉这个短信不让系统保存和继续广播. |
+| SMS_DELIVER_ACTION | 第二优先级的广播，该广播会被显式指定给一个default SMS APP接受，而且系统又通过一定的机制保证了同一时刻只会有 <= 1个default SMS APP, 所以这个广播最多只会发送给1个APP，这个APP负责存储和通知新短信. |
+| SMS_RECEIVED_ACTION | 最低优先级广播，在 SMS_DELIVER_ACTION 广播结束后触发，不指定APP Name，所以声明了该广播的所有APP都可以接收到新短信广播，注册该广播的应用并不被期望会去存储这条短信到短信数据库. |
+
 
 所以，如果你要开发一个短信功能的APP，就要注意了，首先`SMS_FILTER_ACTION`只针对运营商应用，所以第三方用不了，也不用去管；其次，衡量一下你的SMS APP所要提供的功能，如果你想提供读写系统短信数据库（主要是写，读都可以读，写只有DEFAULT SMS APP可以写）的能力，想提供一个类似系统SMS APP的应用的话，就需要声明`SMS_DELIVER_ACTION`，并想办法提示用户把你设置为默认；
 而如果你仅仅想监控一下你所关心的短信，并不关心保存，那么可以声明最低优先级的`SMS_RECEIVED_ACTION`广播，这个广播还能兼容低版本android。。。

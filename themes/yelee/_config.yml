@@ -86,7 +86,7 @@ background_image: 9
 
 highlight_style:
   on: true
-  inline_code: 0  # Value: 0 - 9 可选
+  inline_code: 2  # Value: 0 - 9 可选
   code_block: 3  # Value: 0 - 4 
   # Set inline_code to style highlight text
   # Chose a highlight theme for code block
@@ -95,11 +95,11 @@ highlight_style:
 
 blockquote_style:
   on: true
-  blockquote: 2  # Value: 0 - 7 可选
+  blockquote: 6  # Value: 0 - 7 可选
   # 自定义文章「引用部分」的样式
 
 # 左边栏宽度 px
-left_col_width: 300
+left_col_width: 280
 
 # 目录中标题不换行
 # Keep TOC title on the same line | 

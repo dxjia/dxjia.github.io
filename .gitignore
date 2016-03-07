@@ -6,4 +6,4 @@ node_modules/
 public/
 .deploy*/
 zip-ftp-deploy.py
-a-ftp-deplog.zip
+a-ftp-deploy.zip

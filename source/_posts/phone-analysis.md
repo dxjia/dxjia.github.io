@@ -196,7 +196,7 @@ mUiccSmsController = new UiccSmsController(mProxyPhones);
 - 10 监控Subscription的变化，跟卡有关，用来控制整个FW层对双卡的区分。相关的几个类是：SubscriptionManager  SubscriptionController  SubInfoRecordUpdater，管理default subid等，其default的策略是第一个检测到的可用卡id；当然接口是Public的，也就是暴漏出来的，是可以在需要的地方进行setDefault来改变这个设定的，这些值最终都保存在setting数据库中。
 
 至此，PhoneFactory.makeDefaultPhones完成，接下来再回到PhoneGlobals...
-##Default Phone
+## Default Phone
 ```java
             // Get the default phone
             phone = PhoneFactory.getDefaultPhone();

@@ -21,17 +21,17 @@ date: 2016-02-05 15:31:34
 
 有人专门写了一个插件放在了github上，链接：<https://github.com/xesam/android_offline_doc_plugin> ，使用方法如下：
 
-### 下载插件
+## 下载插件
   直接`git clone`他的项目，或者`Download ZIP`下到本地;
   ![Download ZIP](http://7xqitw.com1.z0.glb.clouddn.com/blog/images/read-offline-api-doc1.png)
   然后将`plugin`目录复制到一个安全的地方，下一步需要将它加载到浏览器上，所以如果目录被删，会造成插件不可用，我是放到了 chrome的程序目录下了；
   ![plugin](http://7xqitw.com1.z0.glb.clouddn.com/blog/images/read-offline-api-doc2.png)
-### google chrome 开发者模式安装插件
+## google chrome 开发者模式安装插件
   直接参照作者的图，如下
   ![install](http://7xqitw.com1.z0.glb.clouddn.com/blog/images/read-offline-api-doc3.png)
   按照上面的红色圈圈步骤一步步来，第`2`步时选择刚刚的`plugin`目录；
 
-### 点击插件开启屏蔽模式
+## 点击插件开启屏蔽模式
   按照上一步操作之后，F5 刷新一下页面，就会有 插件图标了，点击一下，出现红字`ON`在图标上时，说明OK了。这时候就可以直接将你的离线文档拖到浏览器里浏览啦。。。
 
 这样就可以秒开离线文档了，但是。。。这种方式有个缺点就是  `搜索功能`是被废掉的。如果先使用搜索，要么科学上网直接访问官网，或者访问国内的一些镜像站，比如 <http://www.android-doc.com/reference/packages.html> ,但这些站点内容无法保证同步更新的，所以可以两者结合起来看，而如果能科学上网，Android API文档就不是个事啦。。

@@ -12,7 +12,7 @@ date: 2016-03-02 14:37:35
 
 <!--more-->
 
-## Default SMS App
+# Default SMS App
 
 而android在**`4.2`**开始，对操作SMS的app进行了限制，增加了`default SMS APP`的概念，只有default APP才可以操作短信，而且`default SMS APP`可以由用户来指定。
 
@@ -90,7 +90,7 @@ date: 2016-03-02 14:37:35
 
 这个方法会监听应用程序的安装与卸载，并在有应用被安装或者移除的时候，能够及时自动更新default sms app，已保证`default SMS App`是随时都有设定的。
 
-## 运营商授权SMS App
+# 运营商授权SMS App
 　　后来的版本，android又增加了`运营商授权SMS APP`的实现，原则是如果所有的SMS APP里，如果有一个是运营商授权指定的短信处理 APP，那么它就会有第一优先级，不管default app设定的是谁，都会只使用这个授权app来收发和管理显示短信。
 　　那么这个运营商授权APP是在哪里指定的呢？**`答案是：是固化在icc卡里的，也就是运营商给你的手机卡（no-uim和no-sim的手机目前是处理不了的），卡在出厂的时候，会在卡里的某个固定单元文件写上授权APP的package name以及其签名hash校验值，在卡初始化完成后读取这些值解析后保存，如果手机里有这个package name的app，并且签名hash也一致，那么就说明该App是运营商授权sms app。`**
 　　完成这些信息初始化的类为 `UiccCarrierPrivilegeRules`，其内部完成对卡上文件进行读取和解析，保存信息，并提供对外接口。
@@ -106,7 +106,7 @@ if (mCarrierPrivilegeRules == null && mCardState == CardState.CARDSTATE_PRESENT)
     mCarrierPrivilegeRules = null;
 }
 ```
-### UiccCarrierPrivilegeRules
+## UiccCarrierPrivilegeRules
 先看看该类的class注释:
 ```
 /**
@@ -153,7 +153,7 @@ if (mCarrierPrivilegeRules == null && mCardState == CardState.CARDSTATE_PRESENT)
 |getCarrierPackageNamesForIntent | 通过从package manager中取出所有符合传入的Intent的app，也就是取出所有可以处理传入的Intent的app，并检查这些app里是否有符合运营商授权的，并返回符合的list. |
 
 
-## 具体场景
+# 具体场景
 　　以一条新短信的接收为例：
 　　在`InboundSmsHandler`里的`processMessagePart()`函数中：　
 > **processMessagePart()**函数用来将缓存的短信分段进行组装，如果已经收全，就会将短信广播出去，当然，如果是单段的独立短信该函数也就直接广播了.
@@ -241,7 +241,7 @@ if (mCarrierPrivilegeRules == null && mCardState == CardState.CARDSTATE_PRESENT)
 
 第4个参数，传入的`resultReceiver`，是个内部类SmsBroadcastReceiver对象，用来处理短信广播的结果，对每种intent action广播出去之后的处理结果都有分别处理，如从缓存数据库中删除短信、更新短信状态等。这个广播也用来`SMS_DELIVER_ACTION`的广播结束后，重新将短信以`SMS_RECEIVED_ACTION`广播出去，下节对其进行说明。
 
-### 三种SMS ACTION
+## 三种SMS ACTION
 
 所以到目前为止，我们可以看到总共有3种SMS的广播类型，`SMS_FILTER_ACTION`，`SMS_DELIVER_ACTION`以及`SMS_RECEIVED_ACTION`;
 下面整理出了他们的区别：
@@ -256,7 +256,7 @@ if (mCarrierPrivilegeRules == null && mCardState == CardState.CARDSTATE_PRESENT)
 所以，如果你要开发一个短信功能的APP，就要注意了，首先`SMS_FILTER_ACTION`只针对运营商应用，所以第三方用不了，也不用去管；其次，衡量一下你的SMS APP所要提供的功能，如果你想提供读写系统短信数据库（主要是写，读都可以读，写只有DEFAULT SMS APP可以写）的能力，想提供一个类似系统SMS APP的应用的话，就需要声明`SMS_DELIVER_ACTION`，并想办法提示用户把你设置为默认；
 而如果你仅仅想监控一下你所关心的短信，并不关心保存，那么可以声明最低优先级的`SMS_RECEIVED_ACTION`广播，这个广播还能兼容低版本android。。。
 
-## 总结
+# 总结
 　　FW初始化时，首先尝试设定一个`default SMS APP`，同时，在卡槽的icc卡准备好后，开始读取卡上的运营商授权 APP 数据，并保存下来；新短信接收时首先通过接口获取到运营商授权APP，如果没有，再通过接口获取到default SMS APP，如果还没有，就直接广播啦。
 
 　　运营商授权app的优先级大于default SMS APP。

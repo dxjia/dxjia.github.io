@@ -17,6 +17,13 @@ date: 2016-03-18 14:27:47
 
 ## 编译AOSP
 完整编译一次AOSP，这样做的目的是为了生成`idegen`工具需要使用到的jar包 -- `idegen.jar`。
+如果你`make`成功之后，发现在`/out/host/linux-x86/framework`目录下没有生成这个文件，那么可以自己手动编译，
+```
+ cd development/tools/idegen/
+ mm
+```
+
+这之后就会生成`idegen.jar`。 
 
 ## 执行idegen.sh
 在源码根目录执行：

@@ -8,7 +8,7 @@ description: 本文将从跨进程(IPC)调用的角度来分析Android中是怎�
 
 <!--more-->
 
-## 引子
+# 引子
 先来看一段APP使用provider的代码示例，十分的常见，比如在我们的APP中查询一个指定号码的联系人的名字：
 ```java
 String number = "13900001234";  
@@ -29,7 +29,7 @@ cursor.close();
 - 从得到的数据集合中提取数据；
 
 所以从这里来看，通过`context`拿到的`resolver`就可以直接访问`contact`进程的`provider`啦；所以`IPC`应该发生在`context`、`resolver`和`query`之间。
-## 认识Context
+# 认识Context
 先来理解一下什么是`Context`，看看`Android`给出的注释：
 ```java
 /*
@@ -50,7 +50,7 @@ cursor.close();
 
 这里不再对`Context`进行过多的讲解，更多有关`Context`的理解可以参考<http://blog.csdn.net/singwhatiwanna/article/details/21829971> 这篇文章，写的不错。。。
 
-## APP主线程(ActivityThread)
+# APP主线程(ActivityThread)
 上面我们有提到`ContextImpl`里的`main thread`，由于接下来要讲的`contentresolver`的实现跟这个`主线程`息息相关，所以我们这里单独对其进行一下说明。
 每个`APP`运行起来的时候，程序入口都是在`ActivityThread.java`的`main`函数里，(AMS启动进程通过`Process.start`通知`zygote`来`fork`进程这里就不详细说明了，`fork`之后，还是会调用`ActivityThread`里的`main`函数作为程序启动入口)，该入口会创建`ActivityThread`实例
 ```java
@@ -80,7 +80,7 @@ cursor.close();
 可以看到其中都会传递 `ActivityThread mainThread`，他们都是`同一个`哦~
 
 
-## ContentResolover
+# ContentResolover
 根据上面的讲解，我们知道开始的那个[例子](#1-引子)中的`getContext().getContentResolver()`最终会调用到当前类(当前类可能是个activity、service或者application)的`ContextImpl`实例中，我们来看看`ContextImple`里的`getContentResolver()`函数实现：
 ```java
     @Override
@@ -113,7 +113,7 @@ mContentResolver = new ApplicationContentResolver(this, mainThread, user);
 
 但目前为止，我们仍然还都是运行在自己的进程之内的，还没有真正的跨进程访问呢，继续。。。。。
 
-## acquireProvider
+# acquireProvider
 [例子](#1-引子)中拿到`ContentResolver`之后，就直接开始使用`query`函数进行查询啦，来看看这个`query`实现：
 ```java
     public final @Nullable Cursor query(final @NonNull Uri uri, @Nullable String[] projection,
@@ -253,7 +253,7 @@ mContentResolver = new ApplicationContentResolver(this, mainThread, user);
 - `installProvider`，将得到的`IContentProvider`进行本地缓存，增加引用计数等，以便以后直接使用。
 > 要特别`【注意】`，这里最后的`installProvider`调用还是在本地进程中，并且注意`第二个`参数，是`holder`，不为null，这里特地强调这个，是因为等会对方provider所在的进程的`主线程`(也是`ActivityThread`文件)里流程上同样会调用到这个函数，只是`第二个`参数不一样，切记切记。。。。
 
-## 调用者进程在AMS中的流程
+# 调用者进程在AMS中的流程
 前面分析到流程，通过IPC调用，进入了AMS中。
 AMS其本身运行在`system_server`进程中，实现了`binder`通信机制，所以可以被大家进行`IPC`调用，而且其作为所有进程的一个大总管，其内部维护着各个进程对应的一些数据结构，如`ActivityRecord`、`BroadcastRecord`以及`ContentProviderRecord`，以及与之相应的map存储结构，维护这些信息可以是它能够管理进程的各个组件之间的关系，甚至是各个进程之间的关系；比如对于本文的provider，AMS就能做到，如果`provider`所在的进程crash掉了，那么AMS可以去杀死所有正在使用这个`provider`的进程，做的有点绝吧？让他自己死也没什么问题啊。
 接下来我们主要来看`getContentProvider()`在AMS中都干了啥；签名也提到了`ActivityManagerNative.getDefault().getContentProvider`的调用最终进入到`ActivityManagerService`的`getContentProviderImpl`中，函数太长了，我这里只截取几个关键的地方，并在关键点上进行了注释：
@@ -418,7 +418,7 @@ private final ContentProviderHolder getContentProviderImpl(IApplicationThread ca
 5. 调用启动进程成功后，AMS这里就往下继续执行了，`startProcessLocked`返回时，AMS这里只能知道对方进程已经起来了，至于对方执行到哪一步了，此时AMS并不会明确知道，因为对方已经是在一个独立的进程里自己跑了，所以接下来我们可以看到AMS通过`cpr.wait()`的方式等在那里，直到有人在`cpr`这个对象上进行`notify`，谁会`notify`呢，当然是对方进程，上一点里提到了，对方进程跑起来后，会去AMS里`attach`自己，并会最终将自己的provider实例的binder代理发布到AMS的map里，这个时候，它就会`notifyAll`，所以到这里的状况就是：`调用者进程通过IPC调用访问AMS，并wait在AMS的某一个变量上；provider所在进程被AMS启动起来，并将自己的provider代理在AMS中进行注册，随后notifyAll`，一定要注意哦，这里有`三个`进程，一个是`调用者进程`，一个是`provider所在进程`，一个是`AMS`自己（也就是system_server进程），`调用者进程`和`provider所在进程`，前者`wait()`在AMS的某个变量上，而后者会去`notify`;
 6. 继续回到调用者进程IPC调用AMS上来，在被`notify`之后，就会将一个`ContentProviderHolder`返回给调用者进程了，至于这个`ContentProviderHolder`是啥就不再细致分析了，只需要知道其内部包含了IContentProvider就可以了，而客户端进程需要的就是`IContentProvider`;
 
-## 目标进程以及其在AMS中的流程
+# 目标进程以及其在AMS中的流程
 也就是目标provider的发布过程，上一节中讲到了`provider`所在的目标进程被AMS start起来之后，目标进程自己会进行一些application的attach工作，这个章节就来讲解这个过程。
 
 `【note】`，接下来的分析主体是`provider`所在的目标进程了，所以主体是执行在目标进程空间里的。
@@ -701,14 +701,14 @@ public final void publishContentProviders(IApplicationThread caller,
 
 调用者线程拿到`IContentProvider`之后就能直接与目标线程跨进程调用啦~不用AMS再在中间搞来搞去啦。。。。
 
-## 总结
+# 总结
 过程还是比较复杂的，毕竟跨越了3个进程，代码执行调来调去，我们用下面一个图来描述这个过程，希望可以概括明白：
 
 ![enter image description here](http://dxjia.cn/wp-content/uploads/2015/11/contentprovider.gif)
 
 图里精简了大部分流程，以求能简洁的指出`ContentProvider`完成跨进程调用的关键。
 
-## Reference
+# Reference
 [1] http://blog.csdn.net/singwhatiwanna/article/details/21829971
 [2] http://blog.csdn.net/qinjuning/article/details/7310620
 [3] http://blog.csdn.net/luoshengyang/article/details/6963418

@@ -6,6 +6,7 @@ categories:
   - Programmer
 date: 2016-03-10 09:20:40
 ---
+** Reference to aosp\frameworks\base\packages\SystemUI\README **
 Demo mode for the status bar allows you to force the status bar into a fixed state, useful for taking screenshots with a consistent status bar state, or testing different status icon permutations. Demo mode is available in recent versions of Android.
 
 <!--more-->

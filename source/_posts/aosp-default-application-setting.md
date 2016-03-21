@@ -9,7 +9,7 @@ date: 2016-03-08 15:49:50
 在做AOSP源码开发时，有时候为了OEM厂商，会将某些原生APP替换为厂商的APP，或者将厂商的APP设置为默认APP，本文来介绍如何在源码编译环境进行这样的功能设定。
 <!--more-->
 # 替换原生APP
-比如原生有自带一个Calculator应用，OEM出ROM时希望直接替换掉原生应用，这个时候，我们可以将厂商的APP拿过来，放在vendors目录下，然后编写`makefile`文件，使用 `LOCAL_OVERRIDES_PACKAGES`就可以将ROM中删掉，自己取而代之，像下面这样写，后面跟要替换掉的 Module Name，这个name要去Calculator的`Android.mk`里去看。
+比如原生有自带一个Calculator应用，OEM出ROM时希望直接替换掉原生应用，这个时候，我们可以将厂商的APP拿过来，放在vendors目录下，然后编写`makefile`文件，使用 `LOCAL_OVERRIDES_PACKAGES`就可以将原生Calculator从ROM中删掉，自己取而代之，像下面这样写，后面跟要替换掉的 Module Name，这个name要去Calculator的`Android.mk`里去看。
 ```
     LOCAL_OVERRIDES_PACKAGES:= Calculator
 ```
@@ -26,7 +26,7 @@ ROM中有多个可以提供相同功能的APP时，系统在用户使用时会�
     ...
     </preferred-activities>
 ```
-`package-restrictions.xml`文件的生成是由`PackageManager`在开机阶段通过遍历 data/app， system/app, system/priv-app目录，并结合源码编译阶段的另一些配置文件来生成的，这些配置文件位于`/system/etc/preferred-activities/*.xml`目录，是编译阶段从源码中直接copy过来的，所以我们需要按格式要求书写我们的xml文件，并想办法让编译自动将xml文件复制到`system/etc/prefeered-activities/`目录下：
+`package-restrictions.xml`文件的生成是由`PackageManager`在开机阶段通过遍历 data/app， system/app, system/priv-app目录，并结合源码编译阶段的另一些配置文件来生成的，这些配置文件位于`/system/etc/preferred-activities/*.xml`目录，是编译阶段从源码中直接copy过来的，所以我们需要按格式要求书写我们的xml文件，并想办法让编译系统自动将xml文件复制到`system/etc/prefeered-activities/`目录下：
 
 ## 配置格式
 比如上面提到的我们有一个 浏览器APP，需要提前设置好默认，那么在我们的AOSP源码的某个地方，我们定义一个xml文件，起名为` preferred-activies-mybrowser.xml`，内容如下:

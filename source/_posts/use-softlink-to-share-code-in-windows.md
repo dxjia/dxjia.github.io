@@ -1,4 +1,4 @@
-title: 巧用软连接(快捷方式)实现不同项目代码共享
+title: 巧用软连接实现不同项目代码共享
 tags:
   - Android
   - Windows

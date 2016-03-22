@@ -17,6 +17,17 @@ avatar: /img/avatar.jpg
 # Small icon of Your site | 站点小图标地址
 favicon: /favicon.png
 
+# Internationalization | 主题语言
+## Change Language in SITE's _config.yml | 在站点配置中切换语言
+## https://hexo.io/docs/internationalization.html
+## Available Languages: en, zh-Hans, zh-Hant-TW, zh-Hant-HK
+
+# Subdirectory | 子目录
+## If your site' url is 'http://yoursite.com/blog', set root_url as '/blog/'
+## 网站若存放在子目录，请按上面格式填写
+## https://hexo.io/docs/configuration.html#URL
+root_url: 
+
 # Social info. Bar | 社交信息展示
 ## Keep "mailto:" in Email | 设置 Email 时保留 "mailto:"
 ## Encrypt email 加密邮件地址 http://ctrlq.org/encode/
@@ -34,6 +45,7 @@ subnav:
   #简书: "jianshu"
   #SegmentFault: ""
   #网易云音乐: "netease"
+  #虾米音乐: "xiami"
   #Facebook: "#"
   #Google: "#"
   #Twitter: "#"
@@ -84,6 +96,10 @@ youyan:
 ## "0": white-gray background | 淳朴灰白背景
 background_image: 9
 
+## General Color Scheme | 主题配色方案 
+## 可用值 Value: yilia
+color_scheme: 
+
 highlight_style:
   on: true
   inline_code: 2  # Value: 0 - 9 可选
@@ -101,14 +117,19 @@ blockquote_style:
 # 左边栏宽度 px
 left_col_width: 280
 
+# Copyright info. of post | 文末版权信息
+copyright: true
+
+# Table of contents | 文章目录
+toc: true
+
 # 目录中标题不换行
 # Keep TOC title on the same line | 
-toc_nowrap: false
+toc_nowrap: true
 
 # 自定义"阅读全文"链接按钮的显示文字
 # Customize the text on excerpt link
 excerpt_link: 阅读全文
-
 # 是否显示边栏中的搜索框（仅样式，未添加搜索功能）
 # Search Box in left column
 search_box: true
@@ -167,13 +188,28 @@ google_site:
 # Fill in Google Analytics tracking ID, #e.g. UA-XXXXX-X
 google_analytics: 
 
+# 百度统计 http://sitecenter.baidu.com/sc-web/
+# 查看代码，填入 //hm.baidu.com/hm.js? 之后的内容
+baidu_tongji: 
+
 # 不蒜子网站计数设置
 # http://ibruce.info/2015/04/04/busuanzi/
 visit_counter:
   on: true
-  site_visit: 本站到访数
-  page_visit: 本页阅读量
+  site_visit: true
+  page_visit: true
 
 # GitHub Repo Widget
 # https://github.com/hustcc/GitHub-Repo-Widget.js
 github_widget: false
+
+# Progress Bar | 页面加载进度条
+# Demo: http://github.hubspot.com/pace/docs/welcome/
+# type: barber-shop|big-counter|bounce|center-atom|center-circle|
+#       center-radar|center-simple|corner-indicator|flash|flat-top|
+#       loading-bar|mac-osx|minimal
+# color: black|blue|green|orange|pink|purple|red|silver|white|yellow|
+progressBar:
+  on: true
+  type: "minimal"  # Keep Quotes | 保留引号避免出错
+  color: blue

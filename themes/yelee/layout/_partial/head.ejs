@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html <% if (page.lang) { %>lang="<%= page.lang %>"<% } %>>
 <head>
   <meta charset="utf-8">
   <%
@@ -26,7 +26,7 @@
     <link rel="alternative" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
   <% } %>
   <% if (theme.favicon){ %>
-    <link rel="icon" href="<%- theme.favicon %>">
+    <link rel="icon" href="<%- theme.root_url %><%- theme.favicon %>">
   <% } %>
   <% if (theme.animate){ %>
       <%- css('//cdn.bootcss.com/animate.css/3.5.0/animate.min.css') %>
@@ -35,8 +35,11 @@
       <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
   <% } %>
   <%- css('css/style') %>
-  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <% if (is_home() && theme.animate){ %>
+      <style> .article { opacity: 0;} </style>
+  <% } %>
+  <%- css('font-awesome/css/font-awesome.min') %>
+  <link rel="apple-touch-icon" href="<%- theme.root_url %>/apple-touch-icon.png">
   <% if (is_home()){ %>
     <% if (theme.baidu_site) { %> 
       <meta name="baidu-site-verification" content="<%- theme.baidu_site %>" />
@@ -46,8 +49,9 @@
     <% } %>
   <% } %>
   <% if (theme.fancybox){ %>
-      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <%- css('fancybox/jquery.fancybox') %>
   <% } %>
+  <%- js('//cdn.bootcss.com/jquery/1.9.1/jquery.min') %>
   <script>
       var yiliaConfig = {
           fancybox: <%=theme.fancybox%>,
@@ -57,7 +61,34 @@
           isArchive: <%=is_archive()%>,
           isTag: <%=is_tag()%>,
           isCategory: <%=is_category()%>,
-          open_in_new: <%=theme.open_in_new%>
+          open_in_new: <%=theme.open_in_new%>,
       }
   </script>
+
+  <% if (theme.root_url){ %>
+      <script>
+          yiliaConfig.rootUrl = <%=theme.root_url%>;
+      </script>
+  <% } else {%>
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  <% } %>
+
+  <% if (theme.baidu_tongji){ %>
+      <script>
+          var _hmt = _hmt || [];
+          (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?<%=theme.baidu_tongji%>";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+          })();
+      </script>
+  <% } %>
+
+  <% if (theme.progressBar.on) { %>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/<%= theme.progressBar.color || 'blue'%>/pace-theme-<%= theme.progressBar.type || 'minimal'%>.css" rel="stylesheet">
+  <% } %>
 </head>

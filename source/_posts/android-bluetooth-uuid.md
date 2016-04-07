@@ -48,9 +48,3 @@ public BluetoothSocket createRfcommSocketToServiceRecord (UUID uuid)
 > Hint: If you are connecting to a Bluetooth serial board then try using the well-known SPP UUID 00001101-0000-1000-8000-00805F9B34FB. However if you are connecting to an Android peer then please generate your own unique UUID.
 
 意思跟我上面提的差不多。。。
-
-
-# 关于作者
-- 微博：[@piggyguy](http://weibo.com/u/2139052944)
-- 邮箱：<jdxwind@dxjia.cn>
-- GitHub： [dxjia](https://github.com/dxjia)

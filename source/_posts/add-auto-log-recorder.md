@@ -96,8 +96,3 @@ Runtime.getRuntime().exec(logcat command)
 # Reference
 <http://blog.csdn.net/way_ping_li/article/details/8487866>
 
-## 关于作者
-- 微博：[@piggyguy](http://weibo.com/u/2139052944)
-- 邮箱：<jdxwind@dxjia.cn>
-- GitHub： [dxjia](https://github.com/dxjia)
-

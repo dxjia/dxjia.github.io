@@ -32,10 +32,3 @@ mklink 文件名 源文件路径
 
 
 另外，这种方式虽然看起来跟使用`快捷方式`差不多，但实际并不一样，测试发现，使用快捷方式，android studio是无法识别出来的。。。
-
-
-# 关于作者
-- 微博：[@piggyguy](http://weibo.com/u/2139052944)
-- 邮箱：<jdxwind@dxjia.cn>
-- GitHub： [dxjia](https://github.com/dxjia)
-

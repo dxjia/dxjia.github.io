@@ -25,11 +25,11 @@ int main(int argc, char * argv[])
 
 ## APP 结构
 APP 启动过程中， `UIApplicationMain` 类会为 APP 创建一些重要的对象，并让整个 APP 运行起来，其中一个最重要的就是 `UIApplication` 对象，在这个对象里，不断循环并向 APP 派发各种系统事件，像不像 Android 的 `MainThread`， 太像啦。。。下面这个是官方给的图，`MVC` 结构，iOS 开发里这种设计模式贯穿始终。
-![](http://7xqitw.com1.z0.glb.clouddn.com/blog/res/core_objects_2x.png)
+<img src="http://7xqitw.com1.z0.glb.clouddn.com/blog/res/core_objects_2x.png" onload="if(this.width >= 640){this.width = 640}" align="middle"/>
 
 ## The Main Event Loop
 在 `UIApplication` 对象里的主循环，构成了APP 的主线程，系统产生的一些用户交互事件，通过在 APP 初始化时由 `UIKit` 生成的一个端口号，分发给 APP， `UIApplication` 对象里的主循环 是 APP 里第一个接收到这些事件的地方；**当然，并不是所有的交互事件都会走 main loop， 可以知道主循环的概念即可**
-![](http://7xqitw.com1.z0.glb.clouddn.com/blog/res/event_draw_cycle_a_2x.png)
+<img src="http://7xqitw.com1.z0.glb.clouddn.com/blog/res/event_draw_cycle_a_2x.png" onload="if(this.width >= 640){this.width = 640}" align="middle"/>
 
 ## APP`S 状态
 iOS 的 APP 有 **`5`** 种状态，任何时刻都只会是这 5 种中的一种！如下：
@@ -43,7 +43,7 @@ iOS 的 APP 有 **`5`** 种状态，任何时刻都只会是这 5 种中的一�
 | Suspended    |   挂起状态，APP还活着，在后台，继续占有内存，但不会执行任何代码，iOS 会保持这个状态一段时间，以便快速响应用户重新回到 APP，但如果系统内存吃紧，就会优先杀掉这个状态的进程； 注意，系统 从 Background 转到 Suspended 状态不会有任何通知|
 
 官方给的图，**`从这个图上我们可以看出，Active 和 Background 状态之间的转换都会是经过一个短暂的 Inactive 状态的`**
-![](http://7xqitw.com1.z0.glb.clouddn.com/blog/res/high_level_flow_2x.png)
+<img src="http://7xqitw.com1.z0.glb.clouddn.com/blog/res/high_level_flow_2x.png" onload="if(this.width >= 500){this.width = 500}" align="middle"/>
 
 ## 状态切换回调
 APP 状态转换通过在 app delegate 类对象里进行回调一些固定的方法达到通知 APP 的效果，跟 Android 的 `onCreate, onStart, onResume....` 太像！

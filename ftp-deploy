@@ -1,3 +1,2 @@
 # ! /bin/bash
-# run python command
 python zip-ftp-deploy.py

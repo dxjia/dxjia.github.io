@@ -1,0 +1,2 @@
+# ! /bin/bash
+python zip-ftp-deploy.py

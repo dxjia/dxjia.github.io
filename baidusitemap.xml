@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://dxjia.cn/2016/07/27/how_to_compile_ffmpeg_for_android/</loc>
-    <lastmod>2016-08-09T03:03:30.000Z</lastmod>
+    <lastmod>2016-08-09T04:53:43.000Z</lastmod>
     <data>
         <display>
         <title>将 ffmpeg 编译为 android JNI 库</title>
@@ -96,28 +96,6 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/03/08/aosp-default-application-setting/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android源码设置default application</title>
-        <pubTime>2016-03-08T07:49:50.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>AOSP</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://dxjia.cn/2016/04/06/android-upload-picture-php-receive/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
@@ -142,16 +120,16 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/02/29/baidu-voice-helper/</loc>
+    <loc>http://dxjia.cn/2016/03/08/aosp-default-application-setting/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>百度语音识别(Baidu Voice) Android studio版本</title>
-        <pubTime>2016-02-29T01:38:03.000Z</pubTime>
+        <title>Android源码设置default application</title>
+        <pubTime>2016-03-08T07:49:50.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>Java</tag>
+        <tag>AOSP</tag>
          
          
            
@@ -210,19 +188,21 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/01/26/hello-world/</loc>
+    <loc>http://dxjia.cn/2016/02/29/baidu-voice-helper/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>Hello World</title>
-        <pubTime>2016-01-26T11:28:45.000Z</pubTime>
+        <title>百度语音识别(Baidu Voice) Android studio版本</title>
+        <pubTime>2016-02-29T01:38:03.000Z</pubTime>
         
-        <tag>hexo</tag>
+        <tag>Android</tag>
+         
+        <tag>Java</tag>
          
          
            
              
-              <breadCrumb title="Life" url="http://dxjia.cn/categories/Life/"/>
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
           
         </display>
     </data>
@@ -247,6 +227,26 @@
            
              
               <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/26/hello-world/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2016-01-26T11:28:45.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+             
+              <breadCrumb title="Life" url="http://dxjia.cn/categories/Life/"/>
           
         </display>
     </data>
@@ -364,26 +364,6 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>PHP的require路径问题</title>
-        <pubTime>2016-02-25T09:01:15.000Z</pubTime>
-        
-        <tag>PHP</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://dxjia.cn/2016/03/07/python-zip-ftp-upload/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
@@ -434,6 +414,26 @@
 
     
   <url>
+    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>PHP的require路径问题</title>
+        <pubTime>2016-02-25T09:01:15.000Z</pubTime>
+        
+        <tag>PHP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://dxjia.cn/2016/02/05/read-offline-android-api-doc/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
@@ -446,6 +446,28 @@
         <tag>API</tag>
          
         <tag>Doc</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/02/use-softlink-to-share-code-in-windows/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>巧用软连接实现不同项目代码共享</title>
+        <pubTime>2016-02-02T00:51:05.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Windows</tag>
          
          
            
@@ -482,16 +504,18 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/02/02/use-softlink-to-share-code-in-windows/</loc>
+    <loc>http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>巧用软连接实现不同项目代码共享</title>
-        <pubTime>2016-02-02T00:51:05.000Z</pubTime>
+        <title>在博客空间下为手机APP创建RESTFUL API</title>
+        <pubTime>2016-04-14T13:30:28.000Z</pubTime>
         
-        <tag>Android</tag>
+        <tag>PHP</tag>
          
-        <tag>Windows</tag>
+        <tag>API</tag>
+         
+        <tag>RESTFUL</tag>
          
          
            
@@ -514,30 +538,6 @@
         <tag>Android</tag>
          
         <tag>Java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>在博客空间下为手机APP创建RESTFUL API</title>
-        <pubTime>2016-04-14T13:30:28.000Z</pubTime>
-        
-        <tag>PHP</tag>
-         
-        <tag>API</tag>
-         
-        <tag>RESTFUL</tag>
          
          
            

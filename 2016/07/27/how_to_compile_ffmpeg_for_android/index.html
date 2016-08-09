@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://dxjia.cn/2016/07/27/how_to_compile_ffmpeg_for_android/index.html">
 <meta property="og:site_name" content="挨踢的甘蔗">
 <meta property="og:description" content="之前有开源了一个 ffmpeg shared library，其中是把 ffmpeg 2.6 源码编译为android 平台可用的共享库，在其中只介绍了如何编译，但对于如何将这些共享库转变为 JNI 使用却没有讲太多。本文就着重介绍一下思路，方便后续升级 ffmpeg 版本。">
-<meta property="og:updated_time" content="2016-08-09T03:03:30.000Z">
+<meta property="og:updated_time" content="2016-08-09T04:53:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="将 ffmpeg 编译为 android JNI 库">
 <meta name="twitter:description" content="之前有开源了一个 ffmpeg shared library，其中是把 ffmpeg 2.6 源码编译为android 平台可用的共享库，在其中只介绍了如何编译，但对于如何将这些共享库转变为 JNI 使用却没有讲太多。本文就着重介绍一下思路，方便后续升级 ffmpeg 版本。">
@@ -290,7 +290,7 @@
 <p><code>后续实际编译你会发现，这些头文件并不够，还会缺少很多.h文件，所以后续随着编译的过程，必须自己一点点从ffmpeg源码目录不断补充头文件。</code></p>
 <h3 id="prebuilt"><a href="#prebuilt" class="headerlink" title="prebuilt"></a>prebuilt</h3><p>在 jni 目录下新建 <code>prebuilt</code> 目录，然后在 prebuilt 目录内，分别新建 <code>armeabi</code> 和 <code>x86</code> 目录，然后将 ffmpeg 源码编译的出来的 arm 的几个so库文件复制到 armeabi 目录下，同理，将 x86 的复制到 x86 目录下。<br>接下来，修改 Android.mk 文件中的对应的 so 名，都改成自己的对应文件名。如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nclude $(CLEAR_VARS)</span><br><span class="line">LOCAL_MODULE:= avcodec-prebuilt-$(LIB_NAME_PLUS)</span><br><span class="line">LOCAL_SRC_FILES:= prebuilt/$(LIB_NAME_PLUS)/libavcodec-56.so</span><br><span class="line">include $(PREBUILT_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure>
-<p><code>不同的 ffmpeg 版本，这些so的版本是不同的，体现在so文件名都有个数字尾巴，我们可以都去掉，这样比较统一</code></p>
+<p><code>不同的 ffmpeg 版本，这些so的版本是不同的，体现在so文件名都有个数字尾巴，这里不要去掉这些尾巴，因为它们之间还有依赖。如果确实不想带尾巴，那么就需要去改ffmpeg源码的makefile了</code></p>
 <h3 id="复制源文件"><a href="#复制源文件" class="headerlink" title="复制源文件"></a>复制源文件</h3><p><code>ffmpeg</code> 可执行文件执行命令的入口是 ffmpeg.c 文件的 main 函数，所以我们的原理就是将个这个main函数修改为我们的jni函数，那么java层调用这个jni接口就可以执行命令了。<br>从ffmpeg 源码目录下的复制下面的文件到jni目录下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg.c</span><br><span class="line">ffmpeg.h</span><br><span class="line">arm_config.h</span><br><span class="line">x86_config.h</span><br><span class="line">cmdutils.c</span><br><span class="line">cmdutils.h</span><br><span class="line">cmdutils_common_opts.h</span><br><span class="line">ffmpeg_filter.c</span><br><span class="line">ffmpeg_opt.c</span><br></pre></td></tr></table></figure>
 <p>调整 <code>Android.mk</code> 的 <code>LOCAL_SRC_FILES</code> 部分，将 jni 目录下的 所有 .c 文件都加入其中，这样才能参与编译。</p>
@@ -299,13 +299,12 @@
 <h3 id="增加-jni-接口"><a href="#增加-jni-接口" class="headerlink" title="增加 jni 接口"></a>增加 jni 接口</h3><p>如何增加jni这里不多讲了，网上资料很多，也可以参考 <a href="https://github.com/dxjia/ffmpeg-commands-executor-library/tree/as-version/library" target="_blank" rel="external">library</a>.<br>将 ffmpeg.c main函数修改为你的 jni接口，然后在 jni 目录下执行 <code>build.sh</code> (windows下执行 build.cmd) 进行手动编译，一般这里你就会发现少很多头文件，可以一点点试，缺少哪个头文件就从ffmpeg源码目录copy到include的对应目录下，注意有些是需要保留目录结构的，没有就新建。</p>
 <h3 id="java-部分"><a href="#java-部分" class="headerlink" title="java 部分"></a>java 部分</h3><p>在java部分的jni文件中，使用static代码块加载lib库，如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">static &#123;</span><br><span class="line">	System.loadLibrary(&quot;avutil-54&quot;);</span><br><span class="line">	System.loadLibrary(&quot;swresample-1&quot;);</span><br><span class="line">	System.loadLibrary(&quot;avcodec-56&quot;);</span><br><span class="line">	System.loadLibrary(&quot;avformat-56&quot;);</span><br><span class="line">	System.loadLibrary(&quot;swscale-3&quot;);</span><br><span class="line">	System.loadLibrary(&quot;avfilter-5&quot;);</span><br><span class="line">	System.loadLibrary(&quot;avdevice-56&quot;);</span><br><span class="line">	System.loadLibrary(&quot;ffmpegjni&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>注意名字，不带lib</code>，参考 <a href="https://github.com/dxjia/ffmpeg-commands-executor-library/blob/as-version/library/src/main/java/cn/dxjia/ffmpeg/library/FFmpegNativeHelper.java" target="_blank" rel="external">FFmpegNativeHelper.java</a>,</p>
+<p><code>注意名字，修改为你实际使用的版本，并且名字上不带lib</code>，参考 <a href="https://github.com/dxjia/ffmpeg-commands-executor-library/blob/as-version/library/src/main/java/cn/dxjia/ffmpeg/library/FFmpegNativeHelper.java" target="_blank" rel="external">FFmpegNativeHelper.java</a>,</p>
 <p>至此，从 android studio里编译就可以将所有lib和jni库都编译到你的工程里去了。</p>
 <p><code>附：</code> 实际移植 ffmpeg3.0 的时候遇到的其他问题：</p>
 <blockquote>
 <ol>
 <li>在编译ffmpeg源码时，编译完 arm 的版本，去编 x86 版本的时候，提示 strtop 错误，这是由 ffmpeg 的makefile bug造成的，再 <code>run build_android_x86.sh</code> 之前先手动删除 <code>compat/strtop.o &amp; compat/strtop.d</code> 文件。</li>
-<li>手动编译 jni 时，遇到 <code>libm.h:68:32: error: static declaration of &#39;copysign&#39; follows non-static declaration</code>错误，原因是 <code>libavutil/internal.h</code> 中 include libm.h 文件 太后面了，将该include语句提前到文件开始就ok了。</li>
 </ol>
 </blockquote>
 
@@ -319,7 +318,7 @@
         <p><span>本文标题:</span><a href="/2016/07/27/how_to_compile_ffmpeg_for_android/">将 ffmpeg 编译为 android JNI 库</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">dxjia</a></p>
         <p><span>发布时间:</span>2016-07-27, 15:14:38</p>
-        <p><span>最后更新:</span>2016-08-09, 11:03:30</p>
+        <p><span>最后更新:</span>2016-08-09, 12:53:43</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/07/27/how_to_compile_ffmpeg_for_android/" title="将 ffmpeg 编译为 android JNI 库">http://dxjia.cn/2016/07/27/how_to_compile_ffmpeg_for_android/</a>
             <span class="copy-path" data-clipboard-text="原文: http://dxjia.cn/2016/07/27/how_to_compile_ffmpeg_for_android/　　作者: dxjia" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

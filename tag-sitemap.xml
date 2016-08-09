@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>http://dxjia.cn/tags/Java/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Provider/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Bluetooth/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/UUID/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/SMS/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/PHP/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/AOSP/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/System-UI/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Rild/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/selinux/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/APK/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Gradle/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/hexo/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/%E5%8D%9A%E5%AE%A2/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/iOS/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/APP/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Apple/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Guideline/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Phone/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/python/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/blog/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/ftp/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Intellij/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/IDE/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/API/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Doc/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Windows/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Bintry/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/jCenter/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/RESTFUL/</loc>
+        <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/Android/</loc>
+        <lastmod>2016-08-09T04:53:43.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dxjia.cn/tags/ffmpeg/</loc>
+        <lastmod>2016-08-09T04:53:43.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+</urlset>
+<!-- XML Sitemap generated by Hexo SEO Friendly Sitemap Generator -->

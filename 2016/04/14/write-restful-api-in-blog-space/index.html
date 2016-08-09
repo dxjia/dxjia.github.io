@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  
+  <title>在博客空间下为手机APP创建RESTFUL API | 挨踢的甘蔗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这个blog建立有一段时间了，空间是购买的万网（现在归阿里云）的虚拟空间，OS是linux虚拟主机，之前使用wordpress直接搭建的，后来改为hexo静态博客，当时并没有多想，只想着早点搭起博客，所以将wordpress直接安装在空间的  根目录  下了。而最近自己在练习做一个Android客户端，有完整的后台接口和APP需求文档，后台的接口为APP提供登录、注册、信息获取等一系列操作。再去买">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在博客空间下为手机APP创建RESTFUL API">
+<meta property="og:url" content="http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/index.html">
+<meta property="og:site_name" content="挨踢的甘蔗">
+<meta property="og:description" content="这个blog建立有一段时间了，空间是购买的万网（现在归阿里云）的虚拟空间，OS是linux虚拟主机，之前使用wordpress直接搭建的，后来改为hexo静态博客，当时并没有多想，只想着早点搭起博客，所以将wordpress直接安装在空间的  根目录  下了。而最近自己在练习做一个Android客户端，有完整的后台接口和APP需求文档，后台的接口为APP提供登录、注册、信息获取等一系列操作。再去买">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/08/ziyuming.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/08/yumingbangding.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/08/mulujiegou.png">
+<meta property="og:updated_time" content="2016-06-24T13:50:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在博客空间下为手机APP创建RESTFUL API">
+<meta name="twitter:description" content="这个blog建立有一段时间了，空间是购买的万网（现在归阿里云）的虚拟空间，OS是linux虚拟主机，之前使用wordpress直接搭建的，后来改为hexo静态博客，当时并没有多想，只想着早点搭起博客，所以将wordpress直接安装在空间的  根目录  下了。而最近自己在练习做一个Android客户端，有完整的后台接口和APP需求文档，后台的接口为APP提供登录、注册、信息获取等一系列操作。再去买">
+<meta name="twitter:image" content="http://dxjia.cn/wp-content/uploads/2015/08/ziyuming.png">
+  
+    <link rel="alternative" href="/atom.xml" title="挨踢的甘蔗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+      <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+
+  
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">dxjia</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+        
+        
+            <form><input type="text" id="bdcsMain" class="search" placeholder=" Search..."></form>
+            <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=15446680712742267715' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">分类与标签</a></li>
+                        
+                            <li><a href="/about/">关于与留言</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a> <a href="/tags/API/" style="font-size: 12.5px;">API</a> <a href="/tags/APK/" style="font-size: 10px;">APK</a> <a href="/tags/APP/" style="font-size: 10px;">APP</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apple/" style="font-size: 10px;">Apple</a> <a href="/tags/Bintry/" style="font-size: 10px;">Bintry</a> <a href="/tags/Bluetooth/" style="font-size: 10px;">Bluetooth</a> <a href="/tags/Doc/" style="font-size: 10px;">Doc</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Guideline/" style="font-size: 10px;">Guideline</a> <a href="/tags/IDE/" style="font-size: 10px;">IDE</a> <a href="/tags/Intellij/" style="font-size: 10px;">Intellij</a> <a href="/tags/Java/" style="font-size: 17.5px;">Java</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Phone/" style="font-size: 10px;">Phone</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/RESTFUL/" style="font-size: 10px;">RESTFUL</a> <a href="/tags/Rild/" style="font-size: 10px;">Rild</a> <a href="/tags/SMS/" style="font-size: 10px;">SMS</a> <a href="/tags/System-UI/" style="font-size: 10px;">System UI</a> <a href="/tags/UUID/" style="font-size: 10px;">UUID</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/ftp/" style="font-size: 10px;">ftp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/jCenter/" style="font-size: 10px;">jCenter</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/selinux/" style="font-size: 10px;">selinux</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我很坚强，生活你打不倒我。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">dxjia</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">dxjia</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">分类与标签</a></li>
+                
+                    <li><a href="/about/">关于与留言</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-write-restful-api-in-blog-space" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/14/write-restful-api-in-blog-space/" class="article-date">
+      <time datetime="2016-04-14T13:30:28.000Z" itemprop="datePublished">2016-04-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在博客空间下为手机APP创建RESTFUL API
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Programmer/">Programmer</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/API/">API</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RESTFUL/">RESTFUL</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>这个blog建立有一段时间了，空间是购买的万网（现在归阿里云）的虚拟空间，OS是linux虚拟主机，之前使用wordpress直接搭建的，后来改为hexo静态博客，当时并没有多想，只想着早点搭起博客，所以将wordpress直接安装在空间的 <strong> 根目录 </strong> 下了。<br>而最近自己在练习做一个Android客户端，有完整的后台接口和APP需求文档，后台的接口为APP提供登录、注册、信息获取等一系列操作。再去买空间不太现实，所以只能将接口实现在blog同目录下，以空间子目录的形式进行实现。<br><a id="more"></a></p>
+<h1 id="RESTFUL-API"><a href="#RESTFUL-API" class="headerlink" title="RESTFUL API"></a>RESTFUL API</h1><p>为了是接口看起来美观易用，采用RESTFUL API设计原则，所谓RESTFUL，我的简单理解，就是接口清晰明了，目录名就携带了要请求的信息，而不再使用庞杂的参数来携带信息，而且URL的设计上都使用名词，举个例子：</p>
+<p><strong>实现一个接口，获取后台<code>id</code>为<code>10001</code>的用户信息</strong></p>
+<blockquote>
+<p>以前的方式： http ://dxjia.cn/api<strong><code>?action=get_user&amp;id=10001</code></strong><br>RESTFUL   ： http: //dxjia.cn/api/<strong><code>user/10001</code></strong></p>
+</blockquote>
+<p>是不是简洁明了很多。当然具体RESTFUL的设计思想还有更多，这里不做具体介绍啦，可以参考文后的参考文献<a href="#示例"> 1 </a>。</p>
+<h1 id="创建子域名及绑定"><a href="#创建子域名及绑定" class="headerlink" title="创建子域名及绑定"></a>创建子域名及绑定</h1><p>为了使url更加美观，我选择使用子域名<code>api.dxjia.cn</code>来指向，子域名的创建是非常简单的，购买过域名之后，子域名可以免费创建，这里以我在阿里云的后台管理进行创建为例：</p>
+<ul>
+<li>首先进入你的域名后台点击解析，直接添加解析，如下图，记录值部分写你的主机(虚拟空间)真实IP地址。一般都同时添加不带www和带www。<br><img src="http://dxjia.cn/wp-content/uploads/2015/08/ziyuming.png" alt="Img"></li>
+<li>然后进入主机(虚拟空间)后台进行域名绑定，绑定域名到空间。<br><img src="http://dxjia.cn/wp-content/uploads/2015/08/yumingbangding.png" alt="Img"><br>这样之后，api.dxjia.cn就会指向你的空间根目录，是的，现在还没有完成子域名指向要存放我们实现的API的代码的根目录。需要继续往下看。</li>
+</ul>
+<h1 id="创建子目录"><a href="#创建子目录" class="headerlink" title="创建子目录"></a>创建子目录</h1><p>在网站根目录下创建子目录<code>api</code>，为了以后api的版本升级在api目录下继续创建子目录 v1 和 v2，用来区别使用的api版本，也是很时髦的功能。如下：<br><img src="http://dxjia.cn/wp-content/uploads/2015/08/mulujiegou.png" alt="Img"></p>
+<p>其中<code>htdocs</code>是空间根目录，<code>wp_</code>开头的目录都是wordpress的目录。<br>当然，如果你不需要区分版本v1和v2，那么就可以直接在api目录下来写接口代码啦。</p>
+<h1 id="指向子目录"><a href="#指向子目录" class="headerlink" title="指向子目录"></a>指向子目录</h1><p>子域名和子目录都创建好了，而且子域名这时候也已经绑定到空间了，那么我们现在访问api.dxjia.cn，发现其依旧是打开我的blog了，这是因为我们还没有将子域名指向我们的子目录，其默认直接执行根目录下的index.php，也就是blog的入口啦。<br>至于如何将子域名指向子目录，网上有很多都是通过修改<code>.htaccess</code>文件来达到重定向的，确实是可以做到的，但我对正则表达式比较头晕，所以选择了另外一种方式：</p>
+<p><strong> 既然访问<code>api.dxjia.cn</code>是会执行空间根目录下的<code>index.php</code>文件，那么我们在这个文件里区分访问的域名，如果是api.dxjia.cn这个子域名，我们就直接跳到api子目录下的php文件；如果是dxjia.cn，那么我们才执行wordpress博客代码 </strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * change this to false to disable restful api</span><br><span class="line"> */</span></span><br><span class="line">$apiEnable = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">$requireHost = strtolower($_SERVER[<span class="string">'HTTP_HOST'</span>]);</span><br><span class="line">$isRequiringApi = $apiEnable &amp; (!strcmp($requireHost, <span class="string">"api.dxjia.cn"</span>) || !strcmp($requireHost, <span class="string">"www.api.dxjia.cn"</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($isRequiringApi) &#123;</span><br><span class="line">    <span class="keyword">require</span> (<span class="string">"api/api.php"</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Front to the WordPress application. This file doesn't do anything, but loads</span><br><span class="line"> * wp-blog-header.php which does and tells WordPress to load the theme.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@package</span> WordPress</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Tells WordPress to load the WordPress theme and output it.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@var</span> bool</span><br><span class="line"> */</span></span><br><span class="line">define(<span class="string">'WP_USE_THEMES'</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Loads the WordPress Environment and Template */</span></span><br><span class="line"><span class="keyword">require</span>( dirname( <span class="keyword">__FILE__</span> ) . <span class="string">'/wp-blog-header.php'</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>else 分支下的代码是原先博客的执行逻辑，这样就一目了然了，如果判断是访问的子域名<code>api.dxjia.cn</code>或<code>www.api.dxjia.cn</code>那么我们就直接require api目录下的<code>api.php</code>代码，这样就解决了跳转的问题。</p>
+<h1 id="入口文件"><a href="#入口文件" class="headerlink" title="入口文件"></a>入口文件</h1><p>再来看看api.php的写法，其中利用与index.php中差不多的方式来进行v1还是v2的api访问控制。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$request_method = strtolower($_SERVER[<span class="string">'REQUEST_METHOD'</span>]);</span><br><span class="line">$path_info = <span class="string">'/'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (! <span class="keyword">empty</span>($_SERVER[<span class="string">'PATH_INFO'</span>])) &#123;</span><br><span class="line">    $path_info = $_SERVER[<span class="string">'PATH_INFO'</span>];</span><br><span class="line">&#125; <span class="keyword">elseif</span> (! <span class="keyword">empty</span>($_SERVER[<span class="string">'ORIG_PATH_INFO'</span>]) &amp;&amp; $_SERVER[<span class="string">'ORIG_PATH_INFO'</span>] !== <span class="string">'/api.php'</span>) &#123;</span><br><span class="line">    $path_info = $_SERVER[<span class="string">'ORIG_PATH_INFO'</span>];</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (! <span class="keyword">empty</span>($_SERVER[<span class="string">'REQUEST_URI'</span>])) &#123;</span><br><span class="line">        $path_info = (strpos($_SERVER[<span class="string">'REQUEST_URI'</span>], <span class="string">'?'</span>) &gt; <span class="number">0</span>) ? strstr($_SERVER[<span class="string">'REQUEST_URI'</span>], <span class="string">'?'</span>, <span class="keyword">true</span>) : $_SERVER[<span class="string">'REQUEST_URI'</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(strstr($path_info,<span class="string">"/v1"</span>)) &#123;</span><br><span class="line">    <span class="keyword">require</span>(<span class="string">"v1/index.php"</span>);</span><br><span class="line">&#125; <span class="keyword">elseif</span>(strstr($path_info,<span class="string">"/v2"</span>)) &#123;</span><br><span class="line">    <span class="keyword">require</span>(<span class="string">"v2/index.php"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="使用Toro实现RESTFUL-API"><a href="#使用Toro实现RESTFUL-API" class="headerlink" title="使用Toro实现RESTFUL API"></a>使用Toro实现RESTFUL API</h1><p>通过上面的步骤，我们已经能够使<code>http: //api.dxjia.cn/v1/</code>这样的访问正确跳转到<code>api/v1/index.php</code>上来了，接下来就是要实现restful接口了。<br>因为我的接口并不是很多，所以选择了轻量的ToroPHP开源库，其github地址：<a href="https://github.com/anandkunal/ToroPHP" target="_blank" rel="external">https://github.com/anandkunal/ToroPHP</a> ，该库代码只有100多行，利用了router与动态访问特性（类似java的反射），可以非常轻松的实现RestFul接口。具体可以查看他的开源介绍。</p>
+<h2 id="引入ToroPHP"><a href="#引入ToroPHP" class="headerlink" title="引入ToroPHP"></a>引入ToroPHP</h2><ul>
+<li>将<a href="https://github.com/anandkunal/ToroPHP/tree/master/src" target="_blank" rel="external">https://github.com/anandkunal/ToroPHP/tree/master/src</a> 下的Toro.php复制到v1目录下，并在该目录下的index.php中进行require。</li>
+<li>修改Toro.php，去掉访问路径中的/v1，<strong> 如果是在api目录下，不引入v1和v2目录的话，其实直接将Toro.php复制过来就可以正常工作啦 </strong>，但引入v1和v2目录后，要想让Toro在<code>api/v1</code>和<code>api/v2</code>目录下正常工作，需要去掉访问路径中的<code>/v1</code>和<code>/v2</code>，如下：</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$path_temp = $path_info;</span><br><span class="line">$checkHead = substr($path_temp, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">if</span> ($checkHead) &#123;</span><br><span class="line">    <span class="keyword">if</span> (strstr($checkHead, <span class="string">'/v1'</span>)) &#123;</span><br><span class="line">        <span class="comment">// 截取掉/v1</span></span><br><span class="line">        $path_info = substr($path_temp, <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (strlen($path_info) === <span class="number">0</span>) &#123;</span><br><span class="line">    $path_info = <span class="string">"/"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建handler"><a href="#创建handler" class="headerlink" title="创建handler"></a>创建handler</h2><p>ToroPHP的设计原则是一个url对应一个handler，比如对于http: //api.dxjia.cn/v0/这个url我们让其指向HelloWorld.php，那么我们需要创建这个文件，并单独一个类：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloHandler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">"Hello, world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>等建立关联后，使用url访问，会直接自动调用这里的get方法。<br>当然也可以建立post，具体可以参照它的页面。</p>
+<h2 id="建立路由"><a href="#建立路由" class="headerlink" title="建立路由"></a>建立路由</h2><p>创建好handler之后，我们需要在index.php中为其与url建立路由关系，很简单如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span>(<span class="string">"handlers/HelloHandler.php"</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">"Toro.php"</span>);</span><br><span class="line"></span><br><span class="line">Toro::serve(<span class="keyword">array</span>(</span><br><span class="line">    <span class="string">"/"</span> =&gt; <span class="string">"HelloHandler"</span></span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+<p>路由关系都是在一起建立的，如下还增加了其他接个API接口：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span>(<span class="string">"handlers/HelloHandler.php"</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">"handlers/UserHandler.php"</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">"handlers/UsersHandler.php"</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">"handlers/BookHandler.php"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span>(<span class="string">"Toro.php"</span>);</span><br><span class="line"></span><br><span class="line">Toro::serve(<span class="keyword">array</span>(</span><br><span class="line">    <span class="string">"/"</span> =&gt; <span class="string">"HelloHandler"</span>,</span><br><span class="line">    <span class="string">"/users"</span> =&gt; <span class="string">"UsersHandler"</span>, <span class="comment">// 获取所有用户列表</span></span><br><span class="line">    <span class="string">"/users/:number"</span> =&gt; <span class="string">"UserHandler"</span>, <span class="comment">// 获取指定id的用户信息</span></span><br><span class="line">    <span class="string">"/users/:number/book/:alpha"</span> =&gt; <span class="string">"BookHandler"</span> <span class="comment">// 获取指定id的用户所拥有的指定名字的book信息</span></span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+<p>更多的使用方法请参考我的示例，或者ToroPHP的官网</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>因为v1目录本身我自己正在使用，所以这里使用<code>v0</code>目录来进行示例，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://api.dxjia.cn/v0</span><br><span class="line">http://api.dxjia.cn/v0/users</span><br><span class="line">http://api.dxjia.cn/v0/users/10001</span><br><span class="line">http://api.dxjia.cn/v0/users/10001/book/God</span><br></pre></td></tr></table></figure>
+<p>代码共享在github上了：<a href="https://github.com/dxjia/restful-api-example-use-torophp" target="_blank" rel="external">restful-api-example-use-torophp</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[ 1 ] 《RESTful API 设计指南》 <a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/05/restful_api.html</a><br>[ 2 ] 《ToroPHP》<a href="https://github.com/anandkunal/ToroPHP" target="_blank" rel="external">https://github.com/anandkunal/ToroPHP</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/04/14/write-restful-api-in-blog-space/">在博客空间下为手机APP创建RESTFUL API</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">dxjia</a></p>
+        <p><span>发布时间:</span>2016-04-14, 21:30:28</p>
+        <p><span>最后更新:</span>2016-06-24, 21:50:39</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/04/14/write-restful-api-in-blog-space/" title="在博客空间下为手机APP创建RESTFUL API">http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/　　作者: dxjia" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/05/update-library-to-jcenter/">
+                    使用Gradle发布Android开源项目到JCenter
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/06/android-upload-picture-php-receive/">
+                    Android上传图片，PHP接收
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RESTFUL-API"><span class="toc-number">1.</span> <span class="toc-text">RESTFUL API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建子域名及绑定"><span class="toc-number">2.</span> <span class="toc-text">创建子域名及绑定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建子目录"><span class="toc-number">3.</span> <span class="toc-text">创建子目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#指向子目录"><span class="toc-number">4.</span> <span class="toc-text">指向子目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#入口文件"><span class="toc-number">5.</span> <span class="toc-text">入口文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Toro实现RESTFUL-API"><span class="toc-number">6.</span> <span class="toc-text">使用Toro实现RESTFUL API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引入ToroPHP"><span class="toc-number">6.1.</span> <span class="toc-text">引入ToroPHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建handler"><span class="toc-number">6.2.</span> <span class="toc-text">创建handler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立路由"><span class="toc-number">6.3.</span> <span class="toc-text">建立路由</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#示例"><span class="toc-number">7.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+    <style>
+        .toc {
+            white-space: nowrap;
+            overflow-x: hidden;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".toc li a").mouseover(function() {
+                var title = $(this).find('.toc-text').text();
+                $(this).attr("title", title);
+            });
+        })
+    </script>
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/04/14/write-restful-api-in-blog-space/" data-title="在博客空间下为手机APP创建RESTFUL API" data-url="http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"dxjia"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://dxjia.cn/duoshuo-js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/05/update-library-to-jcenter/" title="上一篇: 使用Gradle发布Android开源项目到JCenter">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/06/android-upload-picture-php-receive/" title="下一篇: Android上传图片，PHP接收">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/07/27/how_to_compile_ffmpeg_for_android/">将 ffmpeg 编译为 android JNI 库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/26/ios-background-executions/">iOS 后台任务设计指导</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/23/ios-app-life-cycle/">iOS APP Life Cycle</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/update-library-to-jcenter/">使用Gradle发布Android开源项目到JCenter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/14/write-restful-api-in-blog-space/">在博客空间下为手机APP创建RESTFUL API</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/android-upload-picture-php-receive/">Android上传图片，PHP接收</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/25/write-comment-to-apk-file/">转:一种动态为apk写入信息的方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/read-aosp-source-through-intellij/">使用Android Studio(Intellij)阅读AOSP源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/10/aosp-demo-mode-for-system-ui/">Demo Mode for the Android System UI</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/aosp-default-application-setting/">Android源码设置default application</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/python-zip-ftp-upload/">使用python自动打包hexo网站并上传</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/config-signature-in-gradle-for-release-version/">在gradle中为release版本配置签名</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/android-default-sms-app/">Android 5.0 Default SMS App以及运营商授权SMS App</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/29/baidu-voice-helper/">百度语音识别(Baidu Voice) Android studio版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/25/php-require-path-work-around/">PHP的require路径问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/05/read-offline-android-api-doc/">如何快速打开Android SDK离线文档</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/03/add-auto-log-recorder/">为APP添加log自动记录功能</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/02/use-softlink-to-share-code-in-windows/">巧用软连接实现不同项目代码共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/phone-analysis/">Android5.0 Phone框架分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/android-bluetooth-uuid/">对Android蓝牙UUID的理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/aosp-m-add-second-rild/">Android 6.0 增加 rild 实例无法启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/hexo-write-everywhere/">Hexo利用Github分支在不同电脑上写博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/ContentProvider/">ContentProvider详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 dxjia
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 9;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

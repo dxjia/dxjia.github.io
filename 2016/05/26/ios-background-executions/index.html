@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS 后台任务设计指导 | 挨踢的甘蔗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在 上一篇 文章里介绍了 iOS APP 的状态切换，其中一个状态是 Background ， 也就是后台，在这个状态，程序只被允许执行非常有限的一点点时间，然后就会随时被挂起，不再执行任何代码，但显然是有应用场景需要不断地在后台执行一些任务，比如 音乐播放 APP， 健康记步软件等。本文就来介绍 iOS 所提供的实现这些场景的技术。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 后台任务设计指导">
+<meta property="og:url" content="http://dxjia.cn/2016/05/26/ios-background-executions/index.html">
+<meta property="og:site_name" content="挨踢的甘蔗">
+<meta property="og:description" content="在 上一篇 文章里介绍了 iOS APP 的状态切换，其中一个状态是 Background ， 也就是后台，在这个状态，程序只被允许执行非常有限的一点点时间，然后就会随时被挂起，不再执行任何代码，但显然是有应用场景需要不断地在后台执行一些任务，比如 音乐播放 APP， 健康记步软件等。本文就来介绍 iOS 所提供的实现这些场景的技术。">
+<meta property="og:updated_time" content="2016-06-24T13:50:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 后台任务设计指导">
+<meta name="twitter:description" content="在 上一篇 文章里介绍了 iOS APP 的状态切换，其中一个状态是 Background ， 也就是后台，在这个状态，程序只被允许执行非常有限的一点点时间，然后就会随时被挂起，不再执行任何代码，但显然是有应用场景需要不断地在后台执行一些任务，比如 音乐播放 APP， 健康记步软件等。本文就来介绍 iOS 所提供的实现这些场景的技术。">
+  
+    <link rel="alternative" href="/atom.xml" title="挨踢的甘蔗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+      <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+
+  
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">dxjia</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+        
+        
+            <form><input type="text" id="bdcsMain" class="search" placeholder=" Search..."></form>
+            <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=15446680712742267715' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">分类与标签</a></li>
+                        
+                            <li><a href="/about/">关于与留言</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a> <a href="/tags/API/" style="font-size: 12.5px;">API</a> <a href="/tags/APK/" style="font-size: 10px;">APK</a> <a href="/tags/APP/" style="font-size: 10px;">APP</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apple/" style="font-size: 10px;">Apple</a> <a href="/tags/Bintry/" style="font-size: 10px;">Bintry</a> <a href="/tags/Bluetooth/" style="font-size: 10px;">Bluetooth</a> <a href="/tags/Doc/" style="font-size: 10px;">Doc</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Guideline/" style="font-size: 10px;">Guideline</a> <a href="/tags/IDE/" style="font-size: 10px;">IDE</a> <a href="/tags/Intellij/" style="font-size: 10px;">Intellij</a> <a href="/tags/Java/" style="font-size: 17.5px;">Java</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Phone/" style="font-size: 10px;">Phone</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/RESTFUL/" style="font-size: 10px;">RESTFUL</a> <a href="/tags/Rild/" style="font-size: 10px;">Rild</a> <a href="/tags/SMS/" style="font-size: 10px;">SMS</a> <a href="/tags/System-UI/" style="font-size: 10px;">System UI</a> <a href="/tags/UUID/" style="font-size: 10px;">UUID</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/ftp/" style="font-size: 10px;">ftp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/jCenter/" style="font-size: 10px;">jCenter</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/selinux/" style="font-size: 10px;">selinux</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我很坚强，生活你打不倒我。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">dxjia</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">dxjia</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">分类与标签</a></li>
+                
+                    <li><a href="/about/">关于与留言</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-ios-background-executions" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/26/ios-background-executions/" class="article-date">
+      <time datetime="2016-05-26T08:50:19.000Z" itemprop="datePublished">2016-05-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 后台任务设计指导
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Programmer/">Programmer</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apple/">Apple</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Guideline/">Guideline</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>在 <a href="http://dxjia.cn/2016/05/23/ios-app-life-cycle/">上一篇</a> 文章里介绍了 iOS APP 的状态切换，其中一个状态是 <code>Background</code> ， 也就是后台，在这个状态，程序只被允许执行非常有限的一点点时间，然后就会随时被挂起，不再执行任何代码，但显然是有应用场景<code>需要</code>不断地在后台执行一些任务，比如 音乐播放 APP， 健康记步软件等。本文就来介绍 iOS 所提供的实现这些场景的技术。<br><a id="more"></a></p>
+<h2 id="后台任务分类"><a href="#后台任务分类" class="headerlink" title="后台任务分类"></a>后台任务分类</h2><p>首先 Apple 官方为我们界定了 <strong><code>3</code></strong> 类后台执行任务的场景：</p>
+<ul>
+<li><strong><code>Background Tasks</code></strong>：APP 在前台时启动某项任务，然后在未结束之前突然 切换到了后台，那么 APP 可以在切换回调里使用某些 API 来继续向系统请求一些时间来继续完成这个任务；完成之后通知系统，之后系统会将 APP 挂起；</li>
+<li><strong><code>Downloading</code></strong>：在后台启动从网络下载文件的任务 – 对于文件下载，iOS 有专门的机制；</li>
+<li><strong><code>Specific Backgournd Tasks</code></strong>：应用需要在后台一直执行代码；</li>
+</ul>
+<p>这三种类型的后台任务，在实现时各有不同，下面来一一介绍。</p>
+<h2 id="Background-Tasks"><a href="#Background-Tasks" class="headerlink" title="Background Tasks"></a>Background Tasks</h2><p>Apple 文档建议，如果要启动一个后台任务（异步任务），可以使用 API <code>beginBackgroundTaskWithExpirationHandler</code>来指定，即使启动任务的时候，程序是处在前台的，也没有关系，当位于前台时，该方法请求得到的时间是<code>DBL_MAX</code>，也就是 double 数据类型最大值，你可以认为是无限大，当任务执行过程中 APP 被切换到后台时，任务还没有完成，这个时间又会自动调整为一个时间片段（具体多少我没找到文档说明，都是说可以通过<code>backgroundTimeRemaining</code> 属性得到）。需要注意的是， 这个方法是成对使用的，对于一个固定 task ，每次调用 <code>beginBackgroundTaskWithExpirationHandler</code>，都会产生一个 token 值(<code>UIBackgroundTaskIdentifier</code> 实际是个整型)，必须在任务执行结束时，调用 <code>endBackgroundTask</code> 并传递这个 token，来结束后台任务。另外，作为最佳实践，都应该传递一个 超时 handler，以防申请到的时间片段内，还是没能完成任务的话，做最后的清理和标注工作！如果不传的话，那么结果就是 iOS 直接 kill 掉你的APP，闪退咯，因为它觉得我们骗了它嘛，哈哈。。。<br>下面是一段在进入后台时启动异步任务的例子；<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在某处定义一个 token 变量</span></span><br><span class="line"><span class="built_in">UIBackgroundTaskIdentifier</span> _bgTaskToken;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 进入后台 委派方法回调 </span></span><br><span class="line">- (<span class="keyword">void</span>)applicationDidEnterBackground:(<span class="built_in">UIApplication</span> *)application</span><br><span class="line">&#123;</span><br><span class="line">    _bgTaskToken = [application beginBackgroundTaskWithName:<span class="string">@"MyTask"</span> expirationHandler:^&#123;</span><br><span class="line">        <span class="comment">// 时间到了，任务还没完成，只能清理</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 取消后台任务</span></span><br><span class="line">        [application endBackgroundTask:_bgTaskToken];</span><br><span class="line">        _bgTaskToken = <span class="built_in">UIBackgroundTaskInvalid</span>;</span><br><span class="line">    &#125;];</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 异步启动任务，这样不会阻塞 本委派方法回调</span></span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line">        <span class="comment">// 巴拉巴拉，做自己的任务</span></span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 任务在时间限制内结束啦，取消后台任务 </span></span><br><span class="line">        [application endBackgroundTask:_bgTaskToken];</span><br><span class="line">        _bgTaskToken = <span class="built_in">UIBackgroundTaskInvalid</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Background-Downloading"><a href="#Background-Downloading" class="headerlink" title="Background Downloading"></a>Background Downloading</h2><p>这类后台任务，必须使用 iOS 指定的机制才可以，那就是 <code>NSURLSession</code>。使用 NSURLSession  建立的下载任务，会被系统直接在另外一个独立的系统进程里进行管理，不会因 APP 进入后台或挂起等而受到影响，iOS 会统一管理所有的下载任务。并且，即使你的 APP 已经挂掉啦，下载任务还是会继续，等到下载完成啦，系统会唤起你的 APP 进程，并通知你，但如果是用户主动杀掉的你的进程，那么系统会自动取消下载任务。<br>具体使用方法：</p>
+<ul>
+<li>1, 使用 <code>NSURLSessionConfiguration</code> 类的 <code>backgroundSessionConfigurationWithIdentifier</code> 方法创建一个 NSURLSessionConfiguration 对象，参数为一个字符串，作为一个 token ，完成时会用到，不能为空或 nil；</li>
+<li>2, 设置上一步创建出的对象的 <code>sessionSendsLaunchEvents</code> 属性为 <code>YES</code>；</li>
+<li>3, 如果开启下载任务时，是位于前台的，将 <code>discretionary</code> 属性也设置为 <code>YES</code>；</li>
+<li>4, 设置你需要的其他属性值；</li>
+<li>5，使用配置好的 <code>NSURLSessionConfiguration</code> 对象，作为参数，创建 <code>NSURLSession</code> 实例对象；</li>
+<li>6，使用 <code>NSURLSession</code> 开始下载task，这个这里不细讲啦，需要看 <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html" target="_blank" rel="external">《URL Session Programming Guide》</a> ;</li>
+</ul>
+<p>如果在下载完成之前，你的APP已经挂起或者死掉啦，那么当系统完成下载之后，系统会唤醒你的 APP，并回调 你的 app 委托方法 <code>application:handleEventsForBackgroundURLSession:completionHandler:</code>，在这其中，参数会传进来一个 <code>token</code>，这个就是你第一步里 传入的 字符串，使用这个 字符串，再重新创建一个 <code>NSURLSessionConfiguration</code>，并进行与开始任务之前一样的配置，那么就可以使用这些对象来获取已经完成的任务的详细情况了。</p>
+<h2 id="Background-Long-Running-Tasks"><a href="#Background-Long-Running-Tasks" class="headerlink" title="Background Long-Running Tasks"></a>Background Long-Running Tasks</h2><p>在 iOS 里只有特定的一些应用类型才会被允许可以在后台一直运行，APP 必须显式的声明一些特定权限，才可以在后台进行长时间运行而不被挂起。<br>一些应用类型有 <strong><code>6</code></strong> 种：</p>
+<ul>
+<li>需要在后台播放音频 – 如 Music Player；</li>
+<li>需要在后台录音；</li>
+<li>在后台时也需要不断通知用户位置变动的，比如导航；</li>
+<li>支持 VoIP 电话的 – 如 skype 网络电话；</li>
+<li>需要在后台有规律的下载和处理网络内容的；</li>
+<li>在后台有规律的从其他外设(第三方配件)获取并更新数据的；</li>
+</ul>
+<p>要实现这些类型服务的 APP，需要进行专门的声明，这样系统才会采取相应的操作。</p>
+<p>先来看看怎么声明。</p>
+<h3 id="声明后台服务类型"><a href="#声明后台服务类型" class="headerlink" title="声明后台服务类型"></a>声明后台服务类型</h3><p>通过 XCode 的 project setting 里就可以配置类型，选择之后会自动 在你 工程的 Info.plist 文件里 增加 <code>UIBackgroundModes</code> 键值对；一个 APP 可以同时声明多种支持的后台长期任务类型，在 XCode 里勾选上即可；<br>下表给出了所有 在 XCode 可选的 类型 及 具体含义；</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Xcode background mode</th>
+<th style="text-align:left">UIBackgroundModes 值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Audio and AirPlay</td>
+<td style="text-align:left">audio</td>
+<td style="text-align:left">应用可以在后台播放或录制音频，包括 Apple 自家的 AirPlay 流媒体音视频；对于录制，需要在APP 第一次运行时，用户授予权限才可进行。</td>
+</tr>
+<tr>
+<td style="text-align:left">Location updates</td>
+<td style="text-align:left">location</td>
+<td style="text-align:left">APP 不断更新 GPS 位置信息，并通知给用户，即使 APP 处于后台</td>
+</tr>
+<tr>
+<td style="text-align:left">Voice over IP</td>
+<td style="text-align:left">voip</td>
+<td style="text-align:left">APP 提供通过网络连接来打电话的功能</td>
+</tr>
+<tr>
+<td style="text-align:left">Newsstand downloads</td>
+<td style="text-align:left">newsstand-content</td>
+<td style="text-align:left">杂志应用，可以在后台下载杂志并处理</td>
+</tr>
+<tr>
+<td style="text-align:left">External accessory communication</td>
+<td style="text-align:left">external-accessory</td>
+<td style="text-align:left">一些外设控制 APP， 比如一些控制 第三方 MFI 配件的应用，声明这种 类型，可以让APP 在后台不断的与 外设进行沟通</td>
+</tr>
+<tr>
+<td style="text-align:left">Uses Bluetooth LE accessories</td>
+<td style="text-align:left">bluetooth-central</td>
+<td style="text-align:left">iPhone 作为蓝牙中心设备使用，也就是做为 server；需要在后台不断更新蓝牙状态的</td>
+</tr>
+<tr>
+<td style="text-align:left">Acts as a Bluetooth LE accessory</td>
+<td style="text-align:left">bluetooth-peripheral</td>
+<td style="text-align:left">iPhone 作为蓝牙外围设备使用，也就是做 client，需要在后台不断的访问其他蓝牙设备获取数据的</td>
+</tr>
+<tr>
+<td style="text-align:left">Background fetch</td>
+<td style="text-align:left">fetch</td>
+<td style="text-align:left">APP 需要在后台不断地 频繁有规律的从网络获取数据</td>
+</tr>
+<tr>
+<td style="text-align:left">Remote notifications</td>
+<td style="text-align:left">remote-notification</td>
+<td style="text-align:left">APP 先在后台关注某个 push 推送，但这个 push 推送到达的时候，及时在后台开始对应的下载任务，以尽可能减少用户直接点开 通知 后 查看内容的等待时间</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Playing-and-Recording-Background-Audio"><a href="#Playing-and-Recording-Background-Audio" class="headerlink" title="Playing and Recording Background Audio"></a>Playing and Recording Background Audio</h3><p>一些典型的应用例子：</p>
+<ul>
+<li>音乐播放软件</li>
+<li>录音APP</li>
+<li>支持 AirPlay 音视频播放的APP</li>
+<li>网络通话软件</li>
+</ul>
+<p>当你在 Info.plist 里声明了 <code>UIBackgroundModes</code> 为 <code>audio</code> 的时候，在后台进行 audio 的相关操作时，系统 audio API 会自动阻止系统将你的 APP 进程挂起，所以不需要 APP 自己再进行其他额外的处理，只需要处理自己的软件逻辑即可。</p>
+<p>【Note】：手机上是有可能会有多个 APP 同时拥有后台 audio 操作权限的，这时候系统会根据 每个 APP 开始操作音频时的 audio session 配置来决定如何进行操作，而且你应该非常小心的处理一些中断事件，如来电，其他系统提示音等，这些都有相关的 API 和机制，可以参考 <a href="https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/Introduction/Introduction.html" target="_blank" rel="external">《Audio Session Programming Guide》</a> </p>
+<h3 id="Tracking-the-User’s-Location"><a href="#Tracking-the-User’s-Location" class="headerlink" title="Tracking the User’s Location"></a>Tracking the User’s Location</h3><p>有三种方式来实现 位置的访问：</p>
+<ul>
+<li>The significant-change location service（这也是官方推荐的方式）</li>
+<li>Foreground-only location services</li>
+<li>Background location services</li>
+</ul>
+<p>前两种都不需要在 Info.plist 里声明 <code>UIBackgroundModes</code> ，只有最后一种需要。</p>
+<p><code>The significant-change location service</code> ，字面理解，就是只有位置有变化时才会发出通知，有人说这个时机是依据基站，切换了基站时，就会发出一次通知，所以频率会受基站的密度影响，所以市区更新频率会比郊区高。但<code>好处</code> 是这个服务不管你的 APP 是在前台还是后台，不管是否已经被挂起，或已经死掉了，他都会唤醒你的进程进行相应处理，所以应该是最省电的。</p>
+<p>后两种都是标准的定位服务，只不过一个只能工作在前台，而一个可以在后台工作；<br>【Note】：官方对于使用后台定位服务的 APP 审核是非常严格的，所以使用时一定要小心，并提供足够的说明和解释。</p>
+<p>至于如何实现一个定位 APP ，请看 <a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/LocationAwarenessPG/Introduction/Introduction.html" target="_blank" rel="external">《Location and Maps Programming Guide 》</a></p>
+<h3 id="Implementing-a-VoIP-App"><a href="#Implementing-a-VoIP-App" class="headerlink" title="Implementing a VoIP App"></a>Implementing a VoIP App</h3><p>网络通话软件，skype 就是其中一个。这样的软件使用 internet 连接来进行语音通话，为了提供健全的电话功能，这类软件必须一直保持一个长期的网络连接，以便监听到来电。实现类似的功能，APP 自己并非一直在后台不被挂起，而是交由系统监听 网络连接，有数据进来时，系统会唤醒 APP，并将 socket 转交给 APP 进行处理；<br>大致步骤：</p>
+<ul>
+<li>在 Info.plist 里进行<code>UIBackgroundModes</code>配置；</li>
+<li>配置一个 socket 连接用于 VoIP；</li>
+<li>在进入后台时，调用 <code>setKeepAliveTimeout:handler:</code>方法传递一个回调，用来处理事件；</li>
+<li>配置要使用到的 audio session；</li>
+</ul>
+<p>【Note】：貌似对于 VoIP 的实现， iOS 8 有变化，改为使用 remote notification 的方式来做啦，谁说 iOS 没有碎片化的啊，有！具体实现请参考 <a href="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/StrategiesforImplementingYourApp/StrategiesforImplementingYourApp.html#//apple_ref/doc/uid/TP40007072-CH5-SW13" target="_blank" rel="external">Tips for Developing a VoIP App</a></p>
+<h3 id="Downloading-Newsstand-Content-in-the-Background"><a href="#Downloading-Newsstand-Content-in-the-Background" class="headerlink" title="Downloading Newsstand Content in the Background"></a>Downloading Newsstand Content in the Background</h3><p>杂志应用，居然还有专门的处理。但我看介绍，跟前面讲解的 后台下载文件没啥区别啊！！另外好像也是用 通知推送 触发啊。<a href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NewsstandKit_Framework/index.html#//apple_ref/doc/uid/TP40010838" target="_blank" rel="external">About Newsstand Kit Framework</a></p>
+<h3 id="Communicating-with-an-External-Accessory"><a href="#Communicating-with-an-External-Accessory" class="headerlink" title="Communicating with an External Accessory"></a>Communicating with an External Accessory</h3><p>外设设备有很多，比如一些心率监控器，会在必要的时候向手机推送数据。声明了<code>UIBackgroundModes</code> 为 <code>external-accessory</code> 后，系统就不会主动关闭 APP 与 外设之间的连接，而是替 APP 监视这个连接，但有数据过来时，会唤醒 APP 进行处理，每次唤醒 APP 只有 <code>10 S</code> 种时间进行数据处理，所以应当越快越好，万不得已，如果10S不够，需要使用 <code>beginBackgroundTaskWithExpirationHandler:</code> 方法再申请一段时间进行处理；<br>【Note】：Apple 要求此类应用 需要提供一个 开启 和 关闭 连接的界面供用户使用；</p>
+<h3 id="Communicating-with-a-Bluetooth-Accessory"><a href="#Communicating-with-a-Bluetooth-Accessory" class="headerlink" title="Communicating with a Bluetooth Accessory"></a>Communicating with a Bluetooth Accessory</h3><p>类似上一节的 配件，如果心率监控器跟 手机之间使用的连接方式是蓝牙，那么就一模一样啦，连 唤醒的时间限制都一样，都是 <code>10 S</code>！！！略啦。。。</p>
+<h3 id="Fetching-Small-Amounts-of-Content-Opportunistically"><a href="#Fetching-Small-Amounts-of-Content-Opportunistically" class="headerlink" title="Fetching Small Amounts of Content Opportunistically"></a>Fetching Small Amounts of Content Opportunistically</h3><p>有人依靠这种手段来实现后台永存，但现在不好使啦，除非你是真的每次都在下载东西，而且每次时间都很短。用户的流量啊。因为声明了这个 mode 之后，并不保证 系统一定会给你分配时间来执行后台任务，因为它自己有一套逻辑，如果你经常性唤醒，但却每次都耗时很久，又没有做从网络下载东西的操作，那么以后你被分配给唤醒的几率就会越来越小。另外还有审核！！！！</p>
+<p>正常情况下，声明了这个类型之后，系统在你的 APP 进入后台后，会间隔性的给机会将你的 APP 唤醒，并回调你的 委托方法 <code>application:performFetchWithCompletionHandler:</code>，你需要在这个回调里检查是否有新内容可用，如果有，就开启后台下载，推荐使用 <code>NSURLSession</code> 来建立，下载完成后，你必须调用这个方法出入 的 <code>completionHandler</code> 并传入一个 整型值  来表示 你的处理是否正常，UI是否已经更新，让系统来决定更新 snapshot等；</p>
+<h3 id="Using-Push-Notifications-to-Initiate-a-Download"><a href="#Using-Push-Notifications-to-Initiate-a-Download" class="headerlink" title="Using Push Notifications to Initiate a Download"></a>Using Push Notifications to Initiate a Download</h3><p>这个方式，是你的应用中包含通知功能时，你在服务端推送的通知内容里加入 键值对 <code>content-available</code> = <code>1</code> ，那么 手机收到这个通知后，会自动启动 APP 到后台，或 唤醒（依旧保持后台执行），并回调 委托方法 <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> ，在这个方法里进行内容下载。</p>
+<p>【Note】：需要服务端推送配合</p>
+<h2 id="哪些情况系统会唤醒挂起进程"><a href="#哪些情况系统会唤醒挂起进程" class="headerlink" title="哪些情况系统会唤醒挂起进程"></a>哪些情况系统会唤醒挂起进程</h2><p>当一些特定事件发生时，系统会唤醒已经被挂起的进程，转换到后台运行状态，这些事件针对不同类型的APP 有所不同：</p>
+<h3 id="location-apps"><a href="#location-apps" class="headerlink" title="location apps"></a>location apps</h3><ul>
+<li>系统产生了符合 APP 配置的定位要求的位置更新；</li>
+<li>设备进入或离开了一个网络注册的区域，你可以理解为基站；<h3 id="audio-apps"><a href="#audio-apps" class="headerlink" title="audio apps"></a>audio apps</h3></li>
+<li>audio framework 需要 app 处理数据的时候–任何 播放、录制；<h3 id="Bluetooth-apps"><a href="#Bluetooth-apps" class="headerlink" title="Bluetooth apps"></a>Bluetooth apps</h3></li>
+<li>当手机扮演中心设备时，收到了其他蓝牙设备发来的数据；</li>
+<li>当手机扮演外围设备时，收到了蓝牙服务端发来的数据；<h3 id="background-download-apps"><a href="#background-download-apps" class="headerlink" title="background download apps"></a>background download apps</h3></li>
+<li>本应用的一个包含 <code>content-available</code> = <code>1</code> 的推送通知到达了手机；</li>
+<li>background fetch 类型，系统给予了 APP 唤醒的机会；</li>
+<li>使用 <code>NSURLSession</code> 进行后台下载的APP，在下载过程完成或出现问题时，系统会主动唤醒对应 APP；</li>
+<li>杂志应用，下载完成时唤醒 APP；</li>
+</ul>
+<p>【Note】：绝大多数情况下，系统不会重启被用户手动强制关闭的 APP，但在 iOS 8 之后， location apps 是个例外。其他的所有被用户手动强制关闭的APP 都不会被系统主动唤起，直到 用户再次 主动启动这个 APP，或者手机重启并在用户输入了解锁密码之后才会恢复机制。</p>
+<h2 id="做一个尽责的后台APP"><a href="#做一个尽责的后台APP" class="headerlink" title="做一个尽责的后台APP"></a>做一个尽责的后台APP</h2><p>Apple 教育我们，如果你要实现一个后台 APP，应该做一个有责任的APP，不要乱搞，哈哈。</p>
+<ul>
+<li>不要在后台调用任何 OpenGL ES 接口，在进入后台之前也要保证这些调用都已结束，否则你的 APP 将直接被 kill；</li>
+<li>取消所有 <code>Bonjour</code> 相关的操作，还不清楚这个是啥东西，不过 Apple 说即使你不取消，它在把你挂起之前也会都给你取消；</li>
+<li>如果有网络操作，做好容错处理；</li>
+<li>保存 APP 状态，进入后台前持久化一些数据，以便恢复；</li>
+<li>尽可能多的释放内存，尤其是强引用；</li>
+<li>停止使用共享的系统资源，比如 电话本，日历等，进入后台前，release他们；</li>
+<li>不要在后台进行 UI 的更新操作；</li>
+<li>做好对外设配件的 连接 和断开 事件的响应；这个是 外设编程的机制啦，需要 参考 <a href="https://developer.apple.com/library/ios/featuredarticles/ExternalAccessoryPT/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009502" target="_blank" rel="external">External Accessory Programming Topics</a> ；</li>
+<li>关闭弹出窗口和弹出菜单等；</li>
+<li>移除窗口上的一些敏感信息；</li>
+<li>在后台的执行尽可能小的任务；</li>
+</ul>
+<p>最后， Apple 建议能不后台就不后台，那当然。。。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a href="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html" target="_blank" rel="external">App Programming Guide for iOS - Background Execution</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/05/26/ios-background-executions/">iOS 后台任务设计指导</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">dxjia</a></p>
+        <p><span>发布时间:</span>2016-05-26, 16:50:19</p>
+        <p><span>最后更新:</span>2016-06-24, 21:50:39</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/05/26/ios-background-executions/" title="iOS 后台任务设计指导">http://dxjia.cn/2016/05/26/ios-background-executions/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://dxjia.cn/2016/05/26/ios-background-executions/　　作者: dxjia" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/07/27/how_to_compile_ffmpeg_for_android/">
+                    将 ffmpeg 编译为 android JNI 库
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/23/ios-app-life-cycle/">
+                    iOS APP Life Cycle
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#后台任务分类"><span class="toc-number">1.</span> <span class="toc-text">后台任务分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Background-Tasks"><span class="toc-number">2.</span> <span class="toc-text">Background Tasks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Background-Downloading"><span class="toc-number">3.</span> <span class="toc-text">Background Downloading</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Background-Long-Running-Tasks"><span class="toc-number">4.</span> <span class="toc-text">Background Long-Running Tasks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#声明后台服务类型"><span class="toc-number">4.1.</span> <span class="toc-text">声明后台服务类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Playing-and-Recording-Background-Audio"><span class="toc-number">4.2.</span> <span class="toc-text">Playing and Recording Background Audio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tracking-the-User’s-Location"><span class="toc-number">4.3.</span> <span class="toc-text">Tracking the User’s Location</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implementing-a-VoIP-App"><span class="toc-number">4.4.</span> <span class="toc-text">Implementing a VoIP App</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Downloading-Newsstand-Content-in-the-Background"><span class="toc-number">4.5.</span> <span class="toc-text">Downloading Newsstand Content in the Background</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Communicating-with-an-External-Accessory"><span class="toc-number">4.6.</span> <span class="toc-text">Communicating with an External Accessory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Communicating-with-a-Bluetooth-Accessory"><span class="toc-number">4.7.</span> <span class="toc-text">Communicating with a Bluetooth Accessory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fetching-Small-Amounts-of-Content-Opportunistically"><span class="toc-number">4.8.</span> <span class="toc-text">Fetching Small Amounts of Content Opportunistically</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-Push-Notifications-to-Initiate-a-Download"><span class="toc-number">4.9.</span> <span class="toc-text">Using Push Notifications to Initiate a Download</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哪些情况系统会唤醒挂起进程"><span class="toc-number">5.</span> <span class="toc-text">哪些情况系统会唤醒挂起进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#location-apps"><span class="toc-number">5.1.</span> <span class="toc-text">location apps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#audio-apps"><span class="toc-number">5.2.</span> <span class="toc-text">audio apps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bluetooth-apps"><span class="toc-number">5.3.</span> <span class="toc-text">Bluetooth apps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#background-download-apps"><span class="toc-number">5.4.</span> <span class="toc-text">background download apps</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#做一个尽责的后台APP"><span class="toc-number">6.</span> <span class="toc-text">做一个尽责的后台APP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+    <style>
+        .toc {
+            white-space: nowrap;
+            overflow-x: hidden;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".toc li a").mouseover(function() {
+                var title = $(this).find('.toc-text').text();
+                $(this).attr("title", title);
+            });
+        })
+    </script>
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/05/26/ios-background-executions/" data-title="iOS 后台任务设计指导" data-url="http://dxjia.cn/2016/05/26/ios-background-executions/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"dxjia"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://dxjia.cn/duoshuo-js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/07/27/how_to_compile_ffmpeg_for_android/" title="上一篇: 将 ffmpeg 编译为 android JNI 库">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/23/ios-app-life-cycle/" title="下一篇: iOS APP Life Cycle">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/07/27/how_to_compile_ffmpeg_for_android/">将 ffmpeg 编译为 android JNI 库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/26/ios-background-executions/">iOS 后台任务设计指导</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/23/ios-app-life-cycle/">iOS APP Life Cycle</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/update-library-to-jcenter/">使用Gradle发布Android开源项目到JCenter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/14/write-restful-api-in-blog-space/">在博客空间下为手机APP创建RESTFUL API</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/android-upload-picture-php-receive/">Android上传图片，PHP接收</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/25/write-comment-to-apk-file/">转:一种动态为apk写入信息的方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/read-aosp-source-through-intellij/">使用Android Studio(Intellij)阅读AOSP源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/10/aosp-demo-mode-for-system-ui/">Demo Mode for the Android System UI</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/aosp-default-application-setting/">Android源码设置default application</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/python-zip-ftp-upload/">使用python自动打包hexo网站并上传</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/config-signature-in-gradle-for-release-version/">在gradle中为release版本配置签名</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/android-default-sms-app/">Android 5.0 Default SMS App以及运营商授权SMS App</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/29/baidu-voice-helper/">百度语音识别(Baidu Voice) Android studio版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/25/php-require-path-work-around/">PHP的require路径问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/05/read-offline-android-api-doc/">如何快速打开Android SDK离线文档</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/03/add-auto-log-recorder/">为APP添加log自动记录功能</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/02/use-softlink-to-share-code-in-windows/">巧用软连接实现不同项目代码共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/phone-analysis/">Android5.0 Phone框架分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/android-bluetooth-uuid/">对Android蓝牙UUID的理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/aosp-m-add-second-rild/">Android 6.0 增加 rild 实例无法启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/hexo-write-everywhere/">Hexo利用Github分支在不同电脑上写博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/ContentProvider/">ContentProvider详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 dxjia
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 9;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

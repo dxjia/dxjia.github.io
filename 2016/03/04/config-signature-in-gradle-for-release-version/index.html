@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  
+  <title>在gradle中为release版本配置签名 | 挨踢的甘蔗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="任何一个Android APK 发布之前都会进行签名，没有签名的APK是无法在Android device上进行安装和使用的，而且对于发布到Google Play上的同一个应用，自始至终必须使用同一个签名文件，所以必须保存好签名文件。本文介绍如何在build.gradle中为release版本配置签名文件，这样在打包release版本时可以自动进行签名。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在gradle中为release版本配置签名">
+<meta property="og:url" content="http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/index.html">
+<meta property="og:site_name" content="挨踢的甘蔗">
+<meta property="og:description" content="任何一个Android APK 发布之前都会进行签名，没有签名的APK是无法在Android device上进行安装和使用的，而且对于发布到Google Play上的同一个应用，自始至终必须使用同一个签名文件，所以必须保存好签名文件。本文介绍如何在build.gradle中为release版本配置签名文件，这样在打包release版本时可以自动进行签名。">
+<meta property="og:image" content="http://7xqitw.com1.z0.glb.clouddn.com/keytool.png">
+<meta property="og:updated_time" content="2016-06-24T13:50:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在gradle中为release版本配置签名">
+<meta name="twitter:description" content="任何一个Android APK 发布之前都会进行签名，没有签名的APK是无法在Android device上进行安装和使用的，而且对于发布到Google Play上的同一个应用，自始至终必须使用同一个签名文件，所以必须保存好签名文件。本文介绍如何在build.gradle中为release版本配置签名文件，这样在打包release版本时可以自动进行签名。">
+<meta name="twitter:image" content="http://7xqitw.com1.z0.glb.clouddn.com/keytool.png">
+  
+    <link rel="alternative" href="/atom.xml" title="挨踢的甘蔗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+      <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+
+  
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">dxjia</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+        
+        
+            <form><input type="text" id="bdcsMain" class="search" placeholder=" Search..."></form>
+            <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=15446680712742267715' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">分类与标签</a></li>
+                        
+                            <li><a href="/about/">关于与留言</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a> <a href="/tags/API/" style="font-size: 12.5px;">API</a> <a href="/tags/APK/" style="font-size: 10px;">APK</a> <a href="/tags/APP/" style="font-size: 10px;">APP</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apple/" style="font-size: 10px;">Apple</a> <a href="/tags/Bintry/" style="font-size: 10px;">Bintry</a> <a href="/tags/Bluetooth/" style="font-size: 10px;">Bluetooth</a> <a href="/tags/Doc/" style="font-size: 10px;">Doc</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Guideline/" style="font-size: 10px;">Guideline</a> <a href="/tags/IDE/" style="font-size: 10px;">IDE</a> <a href="/tags/Intellij/" style="font-size: 10px;">Intellij</a> <a href="/tags/Java/" style="font-size: 17.5px;">Java</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Phone/" style="font-size: 10px;">Phone</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/RESTFUL/" style="font-size: 10px;">RESTFUL</a> <a href="/tags/Rild/" style="font-size: 10px;">Rild</a> <a href="/tags/SMS/" style="font-size: 10px;">SMS</a> <a href="/tags/System-UI/" style="font-size: 10px;">System UI</a> <a href="/tags/UUID/" style="font-size: 10px;">UUID</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/ftp/" style="font-size: 10px;">ftp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/jCenter/" style="font-size: 10px;">jCenter</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/selinux/" style="font-size: 10px;">selinux</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我很坚强，生活你打不倒我。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">dxjia</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">dxjia</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">分类与标签</a></li>
+                
+                    <li><a href="/about/">关于与留言</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-config-signature-in-gradle-for-release-version" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/04/config-signature-in-gradle-for-release-version/" class="article-date">
+      <time datetime="2016-03-04T08:05:02.000Z" itemprop="datePublished">2016-03-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在gradle中为release版本配置签名
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Programmer/">Programmer</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/APK/">APK</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>任何一个Android APK 发布之前都会进行签名，没有签名的APK是无法在Android device上进行安装和使用的，而且对于发布到Google Play上的同一个应用，自始至终必须使用同一个签名文件，所以必须保存好签名文件。本文介绍如何在<code>build.gradle</code>中为release版本配置签名文件，这样在打包release版本时可以自动进行签名。<br><a id="more"></a></p>
+<h2 id="签名文件"><a href="#签名文件" class="headerlink" title="签名文件"></a>签名文件</h2><p>签名APK首先需要一个签名文件，可以使用工具生成，或者使用Android Studio生成，Android使用的签名机制源自JAVA，签名文件可以使用JDK的工具进行生成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -alias dxjia -keyalg RSA -validity 20000 -keystore app.keystore</span><br></pre></td></tr></table></figure></p>
+<p>以管理员运行命令行，切换到JDK的bin目录下执行命令，否则<code>-keystore</code> 指定的文件名安排在其他非系统盘符目录，当然，如果你的JDK没有安装在系统盘，这个问题就不用担心。<br><img src="http://7xqitw.com1.z0.glb.clouddn.com/keytool.png" alt="keytool command"></p>
+<p>其中参数<code>-alias</code>后为别名，这个参数在签名APK时需要用到，最后一行输入的密钥口令是这个别名的密码，和一开始输入的密钥库口令，两个密码在签名时也会用到。<code>-validity</code>为证书有效天数，是的，证书有时间效力。在输入密码时没有回显(尽管输就是啦) 并且 退格,tab等都会被当作密码内容.</p>
+<h2 id="在gradle中进行配置"><a href="#在gradle中进行配置" class="headerlink" title="在gradle中进行配置"></a>在gradle中进行配置</h2><p>在android的gradle环境中，android提供了可以直接用于给release版本签名的变量，我们可以直接使用。</p>
+<h3 id="明文配置"><a href="#明文配置" class="headerlink" title="明文配置"></a>明文配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">android &#123;</span><br><span class="line">    ...</span><br><span class="line">    defaultConfig &#123; ... &#125;</span><br><span class="line">    signingConfigs &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            storeFile file(&quot;C\:\\Users\\.android\\app.keystore&quot;)</span><br><span class="line">            storePassword &quot;123456789&quot;</span><br><span class="line">            keyAlias &quot;dxjia&quot;</span><br><span class="line">            keyPassword &quot;987654321&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            ...</span><br><span class="line">            signingConfig signingConfigs.release</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这样在打包release版本时就会自动签名了。</p>
+<h3 id="隐藏密码"><a href="#隐藏密码" class="headerlink" title="隐藏密码"></a>隐藏密码</h3><p>如果你的代码不会开源，或者是公司项目，公司会保护的很好，那么直接用上面的方式就可以了。但如果是开源项目，那么上面的写法就不太可取了 ，因为这样直接配置会暴露密码啊。接下来介绍如果隐藏密码进行配置：</p>
+<blockquote>
+<p>利用<code>property</code>，将密码和签名文件路径信息保存在项目根目录的<code>local.properties</code>文件里，因为这个文件一般都在<code>.gitignore</code>里自动配置了，所以不会上传出去。</p>
+</blockquote>
+<p><strong>在根目录的</strong><code>local.properties</code>文件中配置以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">keystore.path=C\:\\Users\\.android\\app.keyset</span><br><span class="line">keystore.password=123456789</span><br><span class="line">keystore.alias=monkey</span><br><span class="line">keystore.alias_password=987654321</span><br></pre></td></tr></table></figure></p>
+<p>然后在你的<strong>app</strong>目录的<code>build.gradle</code>文件中增加以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">def keystoreFilepath = &apos;&apos;</span><br><span class="line">def keystorePSW = &apos;&apos;</span><br><span class="line">def keystoreAlias = &apos;&apos;</span><br><span class="line">def keystoreAliasPSW = &apos;&apos;</span><br><span class="line">// default keystore file, PLZ config file path in local.properties</span><br><span class="line">def keyfile = file(&apos;s.keystore.temp&apos;)</span><br><span class="line"></span><br><span class="line">Properties properties = new Properties()</span><br><span class="line">// local.properties file in the root director</span><br><span class="line">properties.load(project.rootProject.file(&apos;local.properties&apos;).newDataInputStream())</span><br><span class="line">keystoreFilepath = properties.getProperty(&quot;keystore.path&quot;)</span><br><span class="line"></span><br><span class="line">if (keystoreFilepath) &#123;</span><br><span class="line">    keystorePSW = properties.getProperty(&quot;keystore.password&quot;)</span><br><span class="line">    keystoreAlias = properties.getProperty(&quot;keystore.alias&quot;)</span><br><span class="line">    keystoreAliasPSW = properties.getProperty(&quot;keystore.alias_password&quot;)</span><br><span class="line">    keyfile = file(keystoreFilepath)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    signingConfigs &#123;</span><br><span class="line">        myConfig &#123;</span><br><span class="line">            storeFile keyfile</span><br><span class="line">            storePassword keystorePSW</span><br><span class="line">            keyAlias keystoreAlias</span><br><span class="line">            keyPassword keystoreAliasPSW</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            ...</span><br><span class="line">            if (keyfile.exists()) &#123;</span><br><span class="line">                signingConfig signingConfigs.myConfig</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样就达到了隐藏的目的。</p>
+<p>具体文件分享在了github上，地址：<a href="https://github.com/dxjia/common-tools/tree/master/android-studio/signature.config" target="_blank" rel="external">signature.config</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/03/04/config-signature-in-gradle-for-release-version/">在gradle中为release版本配置签名</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">dxjia</a></p>
+        <p><span>发布时间:</span>2016-03-04, 16:05:02</p>
+        <p><span>最后更新:</span>2016-06-24, 21:50:39</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/03/04/config-signature-in-gradle-for-release-version/" title="在gradle中为release版本配置签名">http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/　　作者: dxjia" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/03/07/python-zip-ftp-upload/">
+                    使用python自动打包hexo网站并上传
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/03/02/android-default-sms-app/">
+                    Android 5.0 Default SMS App以及运营商授权SMS App
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#签名文件"><span class="toc-number">1.</span> <span class="toc-text">签名文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在gradle中进行配置"><span class="toc-number">2.</span> <span class="toc-text">在gradle中进行配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#明文配置"><span class="toc-number">2.1.</span> <span class="toc-text">明文配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隐藏密码"><span class="toc-number">2.2.</span> <span class="toc-text">隐藏密码</span></a></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+    <style>
+        .toc {
+            white-space: nowrap;
+            overflow-x: hidden;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".toc li a").mouseover(function() {
+                var title = $(this).find('.toc-text').text();
+                $(this).attr("title", title);
+            });
+        })
+    </script>
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/03/04/config-signature-in-gradle-for-release-version/" data-title="在gradle中为release版本配置签名" data-url="http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"dxjia"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://dxjia.cn/duoshuo-js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/03/07/python-zip-ftp-upload/" title="上一篇: 使用python自动打包hexo网站并上传">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/03/02/android-default-sms-app/" title="下一篇: Android 5.0 Default SMS App以及运营商授权SMS App">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/07/27/how_to_compile_ffmpeg_for_android/">将 ffmpeg 编译为 android JNI 库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/26/ios-background-executions/">iOS 后台任务设计指导</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/23/ios-app-life-cycle/">iOS APP Life Cycle</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/update-library-to-jcenter/">使用Gradle发布Android开源项目到JCenter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/14/write-restful-api-in-blog-space/">在博客空间下为手机APP创建RESTFUL API</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/android-upload-picture-php-receive/">Android上传图片，PHP接收</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/25/write-comment-to-apk-file/">转:一种动态为apk写入信息的方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/read-aosp-source-through-intellij/">使用Android Studio(Intellij)阅读AOSP源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/10/aosp-demo-mode-for-system-ui/">Demo Mode for the Android System UI</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/aosp-default-application-setting/">Android源码设置default application</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/python-zip-ftp-upload/">使用python自动打包hexo网站并上传</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/config-signature-in-gradle-for-release-version/">在gradle中为release版本配置签名</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/android-default-sms-app/">Android 5.0 Default SMS App以及运营商授权SMS App</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/29/baidu-voice-helper/">百度语音识别(Baidu Voice) Android studio版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/25/php-require-path-work-around/">PHP的require路径问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/05/read-offline-android-api-doc/">如何快速打开Android SDK离线文档</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/03/add-auto-log-recorder/">为APP添加log自动记录功能</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/02/use-softlink-to-share-code-in-windows/">巧用软连接实现不同项目代码共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/phone-analysis/">Android5.0 Phone框架分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/android-bluetooth-uuid/">对Android蓝牙UUID的理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/aosp-m-add-second-rild/">Android 6.0 增加 rild 实例无法启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/hexo-write-everywhere/">Hexo利用Github分支在不同电脑上写博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/ContentProvider/">ContentProvider详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 dxjia
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 9;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

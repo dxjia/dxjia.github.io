@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Gradle发布Android开源项目到JCenter | 挨踢的甘蔗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="有时候为了别人使用方便，需要将自己的开源库发布到jcenter，这样，别人在build.gradle里一句话就可以引用到你的库，本文就来介绍如何通过配置gradle来方便的进行library发布。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Gradle发布Android开源项目到JCenter">
+<meta property="og:url" content="http://dxjia.cn/2016/05/05/update-library-to-jcenter/index.html">
+<meta property="og:site_name" content="挨踢的甘蔗">
+<meta property="og:description" content="有时候为了别人使用方便，需要将自己的开源库发布到jcenter，这样，别人在build.gradle里一句话就可以引用到你的库，本文就来介绍如何通过配置gradle来方便的进行library发布。">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/09/bintray-user-1.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/09/bintray-user-2.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/09/bintray-apikey.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/09/bintray-lastest-activity.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/09/add-to-jcenter.png">
+<meta property="og:image" content="http://dxjia.cn/wp-content/uploads/2015/09/add-to-jcenter-2.png">
+<meta property="og:updated_time" content="2016-06-24T13:50:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Gradle发布Android开源项目到JCenter">
+<meta name="twitter:description" content="有时候为了别人使用方便，需要将自己的开源库发布到jcenter，这样，别人在build.gradle里一句话就可以引用到你的库，本文就来介绍如何通过配置gradle来方便的进行library发布。">
+<meta name="twitter:image" content="http://dxjia.cn/wp-content/uploads/2015/09/bintray-user-1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="挨踢的甘蔗" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+      <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+
+  
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">dxjia</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+        
+        
+            <form><input type="text" id="bdcsMain" class="search" placeholder=" Search..."></form>
+            <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=15446680712742267715' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">分类与标签</a></li>
+                        
+                            <li><a href="/about/">关于与留言</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AOSP/" style="font-size: 10px;">AOSP</a> <a href="/tags/API/" style="font-size: 12.5px;">API</a> <a href="/tags/APK/" style="font-size: 10px;">APK</a> <a href="/tags/APP/" style="font-size: 10px;">APP</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apple/" style="font-size: 10px;">Apple</a> <a href="/tags/Bintry/" style="font-size: 10px;">Bintry</a> <a href="/tags/Bluetooth/" style="font-size: 10px;">Bluetooth</a> <a href="/tags/Doc/" style="font-size: 10px;">Doc</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Guideline/" style="font-size: 10px;">Guideline</a> <a href="/tags/IDE/" style="font-size: 10px;">IDE</a> <a href="/tags/Intellij/" style="font-size: 10px;">Intellij</a> <a href="/tags/Java/" style="font-size: 17.5px;">Java</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/Phone/" style="font-size: 10px;">Phone</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/RESTFUL/" style="font-size: 10px;">RESTFUL</a> <a href="/tags/Rild/" style="font-size: 10px;">Rild</a> <a href="/tags/SMS/" style="font-size: 10px;">SMS</a> <a href="/tags/System-UI/" style="font-size: 10px;">System UI</a> <a href="/tags/UUID/" style="font-size: 10px;">UUID</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/ftp/" style="font-size: 10px;">ftp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/jCenter/" style="font-size: 10px;">jCenter</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/selinux/" style="font-size: 10px;">selinux</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我很坚强，生活你打不倒我。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">dxjia</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">dxjia</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">憋说话，好好干，你想要的时间都会给你</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">分类与标签</a></li>
+                
+                    <li><a href="/about/">关于与留言</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/jdxwind@dxjia.cn" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/u/2139052944" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/dxjia" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-update-library-to-jcenter" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/05/update-library-to-jcenter/" class="article-date">
+      <time datetime="2016-05-05T01:03:24.000Z" itemprop="datePublished">2016-05-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用Gradle发布Android开源项目到JCenter
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Programmer/">Programmer</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bintry/">Bintry</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jCenter/">jCenter</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>有时候为了别人使用方便，需要将自己的开源库发布到<code>jcenter</code>，这样，别人在<code>build.gradle</code>里一句话就可以引用到你的库，本文就来介绍如何通过配置gradle来方便的进行library发布。<br><a id="more"></a><br>之前发布过一个<code>BaiduVoiceHelper</code>，后来时间长了，过程就忘记了，重新检索，根据 <a href="http://blog.csdn.net/maosidiaoxian/article/details/43148643" target="_blank" rel="external">http://blog.csdn.net/maosidiaoxian/article/details/43148643</a> 这篇文章的指引最后成功啦，原作者还配了写好的<code>gradle</code>并开源，地址：<a href="https://github.com/msdx/gradle-publish" target="_blank" rel="external">https://github.com/msdx/gradle-publish</a> ，实际使用过程中发现其github上的写好的<code>gradle</code>是有更新过的，所以跟他的博文稍微有些出入，需要两者结合起来看，所以这里重新总结一下，以便日后直接使用。</p>
+<h1 id="配置bintray账号与API-Key"><a href="#配置bintray账号与API-Key" class="headerlink" title="配置bintray账号与API Key"></a>配置<code>bintray</code>账号与<code>API Key</code></h1><p>首先注册<code>bintray</code>账号，地址：<a href="https://bintray.com/" target="_blank" rel="external">https://bintray.com/</a><br>支持使用<code>github</code>账号直接创建bintray账号，账号生成后会自动为你分配一个<code>API Key</code>，<code>账号名</code>以及<code>API Key</code>是我们能够上传库到bintray的钥匙。<br>登录bintray网站后，先<strong>点击自己的用户名进入个人页面，然后点击<code>Edit</code>进入<code>profile</code>页面，这里就可以看到API Key了</strong>。<br><img src="http://dxjia.cn/wp-content/uploads/2015/09/bintray-user-1.png" alt="click user"><br>进入个人页面：<br><img src="http://dxjia.cn/wp-content/uploads/2015/09/bintray-user-2.png" alt="bintray index"><br>进入profile：<br><img src="http://dxjia.cn/wp-content/uploads/2015/09/bintray-apikey.png" alt="bintray profile"></p>
+<p>至此，便可以复制到<code>API Key</code>信息啦。</p>
+<p><strong><code>接下来</code></strong>，我们需要将这些信息存到本地，也就是你的系统<code>.gradle</code>目录，这里要注意，我们保存在系统下，而<strong>不是你的project下的.gradle目录</strong>，如果你的是XP，那么一般是在 <strong><code>C:\Documents and Settings\用户名\.gradle</code></strong>，而如果是win7以上，那么是在<strong><code>c:\Users\用户名\.gradle</code></strong>。<br>然后再这个目录下新建<code>gradle.properties</code>文件，在其中记录bintray信息，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BINTRAY_USER=dxjia</span><br><span class="line">BINTRAY_KEY=xxxxxxx</span><br></pre></td></tr></table></figure></p>
+<p>如果已经存在，那么就直接在文件末尾添加上面的内容，具体修改为你自己的实际情况。</p>
+<blockquote>
+<p><code>这样处理的好处是：我们只需要记录一次，以后每个需要发布到jcenter的库都可以使用到这里的信息，并且这个由于是存放在project目录之外的，所以也不会受到版本控制的影响，不会因为意外上传而泄露了个人信息。</code></p>
+</blockquote>
+<h1 id="配置项目Gradle"><a href="#配置项目Gradle" class="headerlink" title="配置项目Gradle"></a>配置项目Gradle</h1><h2 id="复制gradle-properties到待发布module目录"><a href="#复制gradle-properties到待发布module目录" class="headerlink" title="复制gradle.properties到待发布module目录"></a>复制gradle.properties到待发布module目录</h2><p>将 <a href="https://github.com/msdx/gradle-publish/blob/master/gradle.properties" target="_blank" rel="external">https://github.com/msdx/gradle-publish/blob/master/gradle.properties</a> 这个文件复制到你需要发布的库的目录下，<code>注意是你的待发布的库的module下</code>，并修改它的内容，如下：<br>以下面的最终引用方式为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile &apos;cn.dxjia:imagetextbutton:1.0.0&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>配置内容如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PROJ_GROUP=cn.dxjia</span><br><span class="line">PROJ_VERSION=1.0.0</span><br><span class="line">PROJ_NAME=imagetextbutton</span><br><span class="line">PROJ_WEBSITEURL=https://github.com/dxjia/ImageTextButton</span><br><span class="line">PROJ_ISSUETRACKERURL=</span><br><span class="line">PROJ_VCSURL=git@github.com:dxjia/ImageTextButton.git</span><br><span class="line">PROJ_DESCRIPTION=android button with icon and text</span><br><span class="line">PROJ_ARTIFACTID=imagetextbutton</span><br><span class="line"></span><br><span class="line">DEVELOPER_ID=dxjia</span><br><span class="line">DEVELOPER_NAME=dex.jia</span><br><span class="line">DEVELOPER_EMAIL=jdxwind@dxjia.cn</span><br></pre></td></tr></table></figure></p>
+<p>最终的引用形式会是 <code>PROJ_GROUP:PROJ_ARTIFACTID:PROJ_VERSION</code>的拼接。每次新版本的发布都要记得来修改 <code>PROJ_VERSION</code>属性，否则····</p>
+<h2 id="修改待发布目录的build-gradle"><a href="#修改待发布目录的build-gradle" class="headerlink" title="修改待发布目录的build.gradle"></a>修改待发布目录的build.gradle</h2><p>配置好上面的内容之后，接下来我们需要修改工程待发布库目录下的<code>build.gradle</code>文件。<br>在<code>build.gradle</code>文件的<code>dependencies</code>中增加下面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">classpath &apos;com.github.dcendents:android-maven-gradle-plugin:1.3&apos;</span><br><span class="line">classpath &apos;com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6&apos;</span><br><span class="line">classpath &quot;org.jfrog.buildinfo:build-info-extractor-gradle:4.0.0&quot; // Remove it if you won&apos;t to publish SNAPSHOT version.</span><br></pre></td></tr></table></figure></p>
+<p>然后在文件末尾加上下面一句引用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// this script was used to upload files to bintray.</span><br><span class="line">apply from: &apos;https://raw.githubusercontent.com/msdx/gradle-publish/master/bintray.gradle&apos;</span><br></pre></td></tr></table></figure></p>
+<p>这句话可以在gradle build的时候，直接从github仓库拉取<code>bintray.gradle</code>文件进行引用，有时候由于网络问题，会出现下面的问题，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Gradle sync failed: Software caused connection abort: recv failed</span><br></pre></td></tr></table></figure></p>
+<p>这时候可以手动将<code>bintray.gradle</code>保存到项目本地待发布的库目录下，并将同目录下的build.gradle最后一句改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply from: &apos;bintray.gradle&apos;</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以了。</p>
+<h1 id="执行发布"><a href="#执行发布" class="headerlink" title="执行发布"></a>执行发布</h1><p>至此，我们就可以执行发布命令啦，使用<strong><code>命令行</code></strong>切换到项目目录下，然后运行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradlew.bat bintrayUpload</span><br></pre></td></tr></table></figure></p>
+<p>或者在Android studio里，直接右侧选择执行 <code>bintrayUpload</code> 这个task即可，这个命令执行结束后，就会直接将生成的 <code>aar</code>库推送到了你的<code>bintray</code>账号下。</p>
+<h1 id="包含到Jcenter"><a href="#包含到Jcenter" class="headerlink" title="包含到Jcenter"></a>包含到Jcenter</h1><p>执行完步骤三后，登录到你的<code>bintray</code>个人页面下，也就是 <a href="https://bintray.com/dxjia" target="_blank" rel="external">https://bintray.com/dxjia</a> ，会在右下角显示出你的动态，会有刚刚推送的库的记录，点击打开。<br><img src="http://dxjia.cn/wp-content/uploads/2015/09/bintray-lastest-activity.png" alt="bintray lastest activity"><br>打开的页面中：<br>点击右下角的 <strong><code>Add to Jcenter</code></strong>按钮，弹出的页面中填写上一些描述，或者不填，然后<strong><code>Send</code></strong>，如此便发出了申请，一般很快就会审核通过。<br><img src="http://dxjia.cn/wp-content/uploads/2015/09/add-to-jcenter.png" alt="add to jcenter"><br>填写申请描述:<br><img src="http://dxjia.cn/wp-content/uploads/2015/09/add-to-jcenter-2.png" alt="compose comments"></p>
+<blockquote>
+<p> <strong><code>基本上按照上面的4个步骤即可，感谢作者 msdx 提供的现成的脚本。</code></strong></p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a href="http://blog.csdn.net/maosidiaoxian/article/details/43148643" target="_blank" rel="external">http://blog.csdn.net/maosidiaoxian/article/details/43148643</a><br>[2] <a href="https://github.com/msdx/gradle-publish" target="_blank" rel="external">https://github.com/msdx/gradle-publish</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/05/05/update-library-to-jcenter/">使用Gradle发布Android开源项目到JCenter</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">dxjia</a></p>
+        <p><span>发布时间:</span>2016-05-05, 09:03:24</p>
+        <p><span>最后更新:</span>2016-06-24, 21:50:39</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/05/05/update-library-to-jcenter/" title="使用Gradle发布Android开源项目到JCenter">http://dxjia.cn/2016/05/05/update-library-to-jcenter/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://dxjia.cn/2016/05/05/update-library-to-jcenter/　　作者: dxjia" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/23/ios-app-life-cycle/">
+                    iOS APP Life Cycle
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/14/write-restful-api-in-blog-space/">
+                    在博客空间下为手机APP创建RESTFUL API
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#配置bintray账号与API-Key"><span class="toc-number">1.</span> <span class="toc-text">配置bintray账号与API Key</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置项目Gradle"><span class="toc-number">2.</span> <span class="toc-text">配置项目Gradle</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#复制gradle-properties到待发布module目录"><span class="toc-number">2.1.</span> <span class="toc-text">复制gradle.properties到待发布module目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改待发布目录的build-gradle"><span class="toc-number">2.2.</span> <span class="toc-text">修改待发布目录的build.gradle</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行发布"><span class="toc-number">3.</span> <span class="toc-text">执行发布</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#包含到Jcenter"><span class="toc-number">4.</span> <span class="toc-text">包含到Jcenter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.1.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+    <style>
+        .toc {
+            white-space: nowrap;
+            overflow-x: hidden;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".toc li a").mouseover(function() {
+                var title = $(this).find('.toc-text').text();
+                $(this).attr("title", title);
+            });
+        })
+    </script>
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/05/05/update-library-to-jcenter/" data-title="使用Gradle发布Android开源项目到JCenter" data-url="http://dxjia.cn/2016/05/05/update-library-to-jcenter/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"dxjia"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://dxjia.cn/duoshuo-js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/23/ios-app-life-cycle/" title="上一篇: iOS APP Life Cycle">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/14/write-restful-api-in-blog-space/" title="下一篇: 在博客空间下为手机APP创建RESTFUL API">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/07/27/how_to_compile_ffmpeg_for_android/">将 ffmpeg 编译为 android JNI 库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/26/ios-background-executions/">iOS 后台任务设计指导</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/23/ios-app-life-cycle/">iOS APP Life Cycle</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/05/update-library-to-jcenter/">使用Gradle发布Android开源项目到JCenter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/14/write-restful-api-in-blog-space/">在博客空间下为手机APP创建RESTFUL API</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/android-upload-picture-php-receive/">Android上传图片，PHP接收</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/25/write-comment-to-apk-file/">转:一种动态为apk写入信息的方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/18/read-aosp-source-through-intellij/">使用Android Studio(Intellij)阅读AOSP源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/10/aosp-demo-mode-for-system-ui/">Demo Mode for the Android System UI</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/aosp-default-application-setting/">Android源码设置default application</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/python-zip-ftp-upload/">使用python自动打包hexo网站并上传</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/config-signature-in-gradle-for-release-version/">在gradle中为release版本配置签名</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/02/android-default-sms-app/">Android 5.0 Default SMS App以及运营商授权SMS App</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/29/baidu-voice-helper/">百度语音识别(Baidu Voice) Android studio版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/25/php-require-path-work-around/">PHP的require路径问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/05/read-offline-android-api-doc/">如何快速打开Android SDK离线文档</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/03/add-auto-log-recorder/">为APP添加log自动记录功能</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/02/use-softlink-to-share-code-in-windows/">巧用软连接实现不同项目代码共享</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/phone-analysis/">Android5.0 Phone框架分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/android-bluetooth-uuid/">对Android蓝牙UUID的理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/29/aosp-m-add-second-rild/">Android 6.0 增加 rild 实例无法启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/hexo-write-everywhere/">Hexo利用Github分支在不同电脑上写博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/27/ContentProvider/">ContentProvider详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/26/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 dxjia
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 9;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

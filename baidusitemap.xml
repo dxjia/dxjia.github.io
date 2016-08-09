@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/07/27/how_to_compile_ffmpeg_for_android/</loc>
+    <lastmod>2016-08-09T03:03:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>将 ffmpeg 编译为 android JNI 库</title>
+        <pubTime>2016-07-27T07:14:38.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>ffmpeg</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/05/26/ios-background-executions/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>iOS 后台任务设计指导</title>
+        <pubTime>2016-05-26T08:50:19.000Z</pubTime>
+        
+        <tag>iOS</tag>
+         
+        <tag>Apple</tag>
+         
+        <tag>Guideline</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/29/android-bluetooth-uuid/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>对Android蓝牙UUID的理解</title>
+        <pubTime>2016-01-29T07:42:13.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Bluetooth</tag>
+         
+        <tag>UUID</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/02/android-default-sms-app/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 5.0 Default SMS App以及运营商授权SMS App</title>
+        <pubTime>2016-03-02T06:37:35.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>SMS</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/08/aosp-default-application-setting/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android源码设置default application</title>
+        <pubTime>2016-03-08T07:49:50.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>AOSP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/04/06/android-upload-picture-php-receive/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android上传图片，PHP接收</title>
+        <pubTime>2016-04-06T13:39:13.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Java</tag>
+         
+        <tag>PHP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/29/baidu-voice-helper/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>百度语音识别(Baidu Voice) Android studio版本</title>
+        <pubTime>2016-02-29T01:38:03.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/10/aosp-demo-mode-for-system-ui/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Demo Mode for the Android System UI</title>
+        <pubTime>2016-03-10T01:20:40.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>System UI</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/29/aosp-m-add-second-rild/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 6.0 增加 rild 实例无法启动</title>
+        <pubTime>2016-01-29T05:56:05.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Rild</tag>
+         
+        <tag>selinux</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/26/hello-world/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2016-01-26T11:28:45.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+             
+              <breadCrumb title="Life" url="http://dxjia.cn/categories/Life/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>在gradle中为release版本配置签名</title>
+        <pubTime>2016-03-04T08:05:02.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>APK</tag>
+         
+        <tag>Gradle</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/27/hexo-write-everywhere/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hexo利用Github分支在不同电脑上写博客</title>
+        <pubTime>2016-01-27T12:29:13.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+        <tag>博客</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/03/add-auto-log-recorder/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>为APP添加log自动记录功能</title>
+        <pubTime>2016-02-03T07:01:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/05/23/ios-app-life-cycle/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>iOS APP Life Cycle</title>
+        <pubTime>2016-05-23T07:56:44.000Z</pubTime>
+        
+        <tag>iOS</tag>
+         
+        <tag>APP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/27/ContentProvider/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>ContentProvider详解</title>
+        <pubTime>2016-01-27T11:28:45.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Provider</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/01/29/phone-analysis/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android5.0 Phone框架分析</title>
+        <pubTime>2016-01-29T12:35:12.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Phone</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>PHP的require路径问题</title>
+        <pubTime>2016-02-25T09:01:15.000Z</pubTime>
+        
+        <tag>PHP</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/07/python-zip-ftp-upload/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用python自动打包hexo网站并上传</title>
+        <pubTime>2016-03-07T03:18:56.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+        <tag>python</tag>
+         
+        <tag>blog</tag>
+         
+        <tag>ftp</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/18/read-aosp-source-through-intellij/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用Android Studio(Intellij)阅读AOSP源码</title>
+        <pubTime>2016-03-18T06:27:47.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Intellij</tag>
+         
+        <tag>IDE</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/05/read-offline-android-api-doc/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>如何快速打开Android SDK离线文档</title>
+        <pubTime>2016-02-05T07:31:34.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>API</tag>
+         
+        <tag>Doc</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/05/05/update-library-to-jcenter/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用Gradle发布Android开源项目到JCenter</title>
+        <pubTime>2016-05-05T01:03:24.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Bintry</tag>
+         
+        <tag>jCenter</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/02/use-softlink-to-share-code-in-windows/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>巧用软连接实现不同项目代码共享</title>
+        <pubTime>2016-02-02T00:51:05.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Windows</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/25/write-comment-to-apk-file/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>转:一种动态为apk写入信息的方案</title>
+        <pubTime>2016-03-25T09:14:56.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/04/14/write-restful-api-in-blog-space/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>在博客空间下为手机APP创建RESTFUL API</title>
+        <pubTime>2016-04-14T13:30:28.000Z</pubTime>
+        
+        <tag>PHP</tag>
+         
+        <tag>API</tag>
+         
+        <tag>RESTFUL</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+</urlset>

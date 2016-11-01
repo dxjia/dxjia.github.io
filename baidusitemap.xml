@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://dxjia.cn/2016/11/01/git-and-repo/</loc>
+    <lastmod>2016-11-01T11:06:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>git and repo</title>
+        <pubTime>2016-11-01T10:52:33.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://dxjia.cn/2016/07/27/how_to_compile_ffmpeg_for_android/</loc>
     <lastmod>2016-08-09T04:53:43.000Z</lastmod>
     <data>
@@ -26,88 +48,16 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/05/26/ios-background-executions/</loc>
+    <loc>http://dxjia.cn/2016/02/03/add-auto-log-recorder/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>iOS 后台任务设计指导</title>
-        <pubTime>2016-05-26T08:50:19.000Z</pubTime>
-        
-        <tag>iOS</tag>
-         
-        <tag>Apple</tag>
-         
-        <tag>Guideline</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://dxjia.cn/2016/01/29/android-bluetooth-uuid/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>对Android蓝牙UUID的理解</title>
-        <pubTime>2016-01-29T07:42:13.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Bluetooth</tag>
-         
-        <tag>UUID</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://dxjia.cn/2016/03/02/android-default-sms-app/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android 5.0 Default SMS App以及运营商授权SMS App</title>
-        <pubTime>2016-03-02T06:37:35.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>SMS</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://dxjia.cn/2016/04/06/android-upload-picture-php-receive/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android上传图片，PHP接收</title>
-        <pubTime>2016-04-06T13:39:13.000Z</pubTime>
+        <title>为APP添加log自动记录功能</title>
+        <pubTime>2016-02-03T07:01:00.000Z</pubTime>
         
         <tag>Android</tag>
          
         <tag>Java</tag>
-         
-        <tag>PHP</tag>
          
          
            
@@ -142,16 +92,16 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/03/10/aosp-demo-mode-for-system-ui/</loc>
+    <loc>http://dxjia.cn/2016/01/27/ContentProvider/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>Demo Mode for the Android System UI</title>
-        <pubTime>2016-03-10T01:20:40.000Z</pubTime>
+        <title>ContentProvider详解</title>
+        <pubTime>2016-01-27T11:28:45.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>System UI</tag>
+        <tag>Provider</tag>
          
          
            
@@ -210,18 +160,40 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/</loc>
+    <loc>http://dxjia.cn/2016/01/29/android-bluetooth-uuid/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>在gradle中为release版本配置签名</title>
-        <pubTime>2016-03-04T08:05:02.000Z</pubTime>
+        <title>对Android蓝牙UUID的理解</title>
+        <pubTime>2016-01-29T07:42:13.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>APK</tag>
+        <tag>Bluetooth</tag>
          
-        <tag>Gradle</tag>
+        <tag>UUID</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/10/aosp-demo-mode-for-system-ui/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Demo Mode for the Android System UI</title>
+        <pubTime>2016-03-10T01:20:40.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>System UI</tag>
          
          
            
@@ -254,16 +226,18 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/01/27/hexo-write-everywhere/</loc>
+    <loc>http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>Hexo利用Github分支在不同电脑上写博客</title>
-        <pubTime>2016-01-27T12:29:13.000Z</pubTime>
+        <title>在gradle中为release版本配置签名</title>
+        <pubTime>2016-03-04T08:05:02.000Z</pubTime>
         
-        <tag>hexo</tag>
+        <tag>Android</tag>
          
-        <tag>博客</tag>
+        <tag>APK</tag>
+         
+        <tag>Gradle</tag>
          
          
            
@@ -276,16 +250,18 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/02/03/add-auto-log-recorder/</loc>
+    <loc>http://dxjia.cn/2016/04/06/android-upload-picture-php-receive/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>为APP添加log自动记录功能</title>
-        <pubTime>2016-02-03T07:01:00.000Z</pubTime>
+        <title>Android上传图片，PHP接收</title>
+        <pubTime>2016-04-06T13:39:13.000Z</pubTime>
         
         <tag>Android</tag>
          
         <tag>Java</tag>
+         
+        <tag>PHP</tag>
          
          
            
@@ -320,16 +296,38 @@
 
     
   <url>
-    <loc>http://dxjia.cn/2016/01/27/ContentProvider/</loc>
+    <loc>http://dxjia.cn/2016/01/27/hexo-write-everywhere/</loc>
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     <data>
         <display>
-        <title>ContentProvider详解</title>
-        <pubTime>2016-01-27T11:28:45.000Z</pubTime>
+        <title>Hexo利用Github分支在不同电脑上写博客</title>
+        <pubTime>2016-01-27T12:29:13.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+        <tag>博客</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/03/02/android-default-sms-app/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 5.0 Default SMS App以及运营商授权SMS App</title>
+        <pubTime>2016-03-02T06:37:35.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>Provider</tag>
+        <tag>SMS</tag>
          
          
            
@@ -352,6 +350,50 @@
         <tag>Android</tag>
          
         <tag>Phone</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/05/26/ios-background-executions/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>iOS 后台任务设计指导</title>
+        <pubTime>2016-05-26T08:50:19.000Z</pubTime>
+        
+        <tag>iOS</tag>
+         
+        <tag>Apple</tag>
+         
+        <tag>Guideline</tag>
+         
+         
+           
+             
+              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>PHP的require路径问题</title>
+        <pubTime>2016-02-25T09:01:15.000Z</pubTime>
+        
+        <tag>PHP</tag>
          
          
            
@@ -402,26 +444,6 @@
         <tag>Intellij</tag>
          
         <tag>IDE</tag>
-         
-         
-           
-             
-              <breadCrumb title="Programmer" url="http://dxjia.cn/categories/Programmer/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>PHP的require路径问题</title>
-        <pubTime>2016-02-25T09:01:15.000Z</pubTime>
-        
-        <tag>PHP</tag>
          
          
            

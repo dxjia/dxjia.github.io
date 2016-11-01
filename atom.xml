@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://dxjia.cn/"/>
-  <updated>2016-08-09T04:53:43.000Z</updated>
+  <updated>2016-11-01T11:06:58.000Z</updated>
   <id>http://dxjia.cn/</id>
   
   <author>
@@ -14,6 +14,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>git and repo</title>
+    <link href="http://dxjia.cn/2016/11/01/git-and-repo/"/>
+    <id>http://dxjia.cn/2016/11/01/git-and-repo/</id>
+    <published>2016-11-01T10:52:33.000Z</published>
+    <updated>2016-11-01T11:06:58.000Z</updated>
+    
+    <content type="html">&lt;p&gt;git 和 repo 的关系？&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;git&quot;&gt;&lt;a href=&quot;#git&quot; class=&quot;headerlink&quot; title=&quot;git&quot;&gt;&lt;/a&gt;git&lt;/h1&gt;&lt;p&gt;git 是一个免费开源的版本控制系统，可以非常方便的对项目进行协同开发，分支和版本管理。&lt;br&gt;在做 Android 源码开发的时候，可以看到，Android 的源码库分成了很多的 git 库，基本上每个模块就会单独一个 git 库，这样的好处也是非常明显的，首先是非常清晰，Android 系统体系十分庞大，这样的划分清晰明了，每个 git 库都互不干扰，另一方面，这样也方便了以 Android 源码来进行二次开发的版本管理与修改追溯。&lt;/p&gt;
+&lt;h1 id=&quot;repo&quot;&gt;&lt;a href=&quot;#repo&quot; class=&quot;headerlink&quot; title=&quot;repo&quot;&gt;&lt;/a&gt;repo&lt;/h1&gt;&lt;p&gt;每个git库内的版本控制都可以由 git 完成，那么谁来管理所有的 git 库呢，那就是 repo 了，repo 是 google 编写的脚本，是用 python 编写的，来统一管理所有 git 仓库，当然其中肯定是调用了 git 了的。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;git 和 repo 的关系？&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Programmer" scheme="http://dxjia.cn/categories/Programmer/"/>
+    
+    
+      <category term="Android" scheme="http://dxjia.cn/tags/Android/"/>
+    
+      <category term="Java" scheme="http://dxjia.cn/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title>将 ffmpeg 编译为 android JNI 库</title>
@@ -1384,52 +1411,6 @@
       <category term="Android" scheme="http://dxjia.cn/tags/Android/"/>
     
       <category term="Phone" scheme="http://dxjia.cn/tags/Phone/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>对Android蓝牙UUID的理解</title>
-    <link href="http://dxjia.cn/2016/01/29/android-bluetooth-uuid/"/>
-    <id>http://dxjia.cn/2016/01/29/android-bluetooth-uuid/</id>
-    <published>2016-01-29T07:42:13.000Z</published>
-    <updated>2016-06-24T13:50:39.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;UUID&quot;&gt;&lt;a href=&quot;#UUID&quot; class=&quot;headerlink&quot; title=&quot;UUID&quot;&gt;&lt;/a&gt;UUID&lt;/h1&gt;&lt;p&gt;先来段百度百科上的解释：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;UUID含义是通用唯一识别码 (Universally Unique Identifier)，这 是一个软件建构的标准，也是被开源软件基金会 (Open Software Foundation, OSF) 的组织应用在分布式计算环境 (Distributed Computing Environment, DCE) 领域的一部分。它保证对在同一时空中的所有机器都是唯一的。通常平台会提供生成的API。按照开放软件基金会(OSF)制定的标准计算，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字&lt;br&gt;UUID 的目的，是让分布式系统中的所有元素，都能有唯一的辨识资讯，而不需要透过中央控制端来做辨识资讯的指定。如此一来，每个人都可以建立不与其它人冲突的 UUID。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;总结起来就是，UUID是根据一定算法，计算得到的一长串数字，这个数字的产生使用了多种元素，所以使得这串数字不会重复，每次生成都会产生不一样的序列，所以可以用来作为唯一标识。&lt;/p&gt;
-&lt;h1 id=&quot;蓝牙RFCOMM数据-SPP-串口-通信&quot;&gt;&lt;a href=&quot;#蓝牙RFCOMM数据-SPP-串口-通信&quot; class=&quot;headerlink&quot; title=&quot;蓝牙RFCOMM数据(SPP 串口)通信&quot;&gt;&lt;/a&gt;蓝牙RFCOMM数据(SPP 串口)通信&lt;/h1&gt;&lt;p&gt;在来看看在蓝牙中为啥会用到UUID。&lt;br&gt;在蓝牙协议中，UUID被用来标识蓝牙设备所提供的服务，&lt;code&gt;并非是标识蓝牙设备本身哦&lt;/code&gt;，一个蓝牙设备可以提供多种服务，比如&lt;code&gt;A2DP&lt;/code&gt;（蓝牙音频传输）、&lt;code&gt;HEADFREE&lt;/code&gt;（免提）、&lt;code&gt;PBAP&lt;/code&gt;(电话本)、&lt;code&gt;SPP&lt;/code&gt;(串口通信)等等，每种服务都对应一个UUID，其中在蓝牙协议栈里，这些默认提供的profile是都有对应的UUID的，也就是默认的UUID，比如&lt;code&gt;SPP&lt;/code&gt;，&lt;code&gt;00001101-0000-1000-8000-00805F9B34FB&lt;/code&gt;就是一个非常 &lt;code&gt;well-known&lt;/code&gt;的UUID，基本上所有的蓝牙板不修改的话都是这个值，所以，如果是与一个蓝牙开发板进行串口通信，而蓝牙侧又不是自己可以控制的，就可以试试这个值。&lt;/p&gt;
-&lt;p&gt;当然，我们进行串口通信的开发，一般都会自己同时开发两侧，因为串口传递的数据就是数据流，没有格式之说，具体发送的数据的意义需要自己来定义，就是说自己定义规则，这就要求一端发送的数据，另一端可以理解。两者的通信基于socket进行实现，所以必须有一端做服务端，另一端做客户端。&lt;/p&gt;
-&lt;p&gt;再来说下，android里进行蓝牙串口通信的接口，以android端作为客户端为例，也就是对方蓝牙设备作为server端，等着android端来连接。&lt;br&gt;那么android端需要通过&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; BluetoothSocket &lt;span class=&quot;title&quot;&gt;createRfcommSocketToServiceRecord&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(UUID uuid)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;这个接口来创建一个socket，并用这个socket对connect()，UUID参数类似用来指定socket对应的端口，而server端必须也有在这个UUID上创建好server端socket上监听才可以成功连接上，两者用的UUID必须一样才可以。&lt;/p&gt;
-&lt;p&gt;所以UUID的用处就在这里。&lt;/p&gt;
-&lt;h1 id=&quot;如何使用UUID&quot;&gt;&lt;a href=&quot;#如何使用UUID&quot; class=&quot;headerlink&quot; title=&quot;如何使用UUID&quot;&gt;&lt;/a&gt;如何使用UUID&lt;/h1&gt;&lt;p&gt;根据上面的描述，要使用蓝牙进行串口通信，前提条件就是两侧都是你可以定义的（如果不可以，那么你可以尝试&lt;code&gt;well-known SPP UUID&lt;/code&gt;，但双方的数据你是没办法控制的），两侧都可以自定义，这样的场景才是使用蓝牙串口通信解决问题的合理场景啊，要不然通信了，互发的数据不认识，没啥用啊。。。。&lt;/p&gt;
-&lt;p&gt;所以，这种情况，最好是使用自己生成的UUID，在windows下，命令行里执行&lt;code&gt;uuidgen&lt;/code&gt; 就可以得到一个，类似：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;14c5449a-6267-4c7e-bd10-63dd79740e5d&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;这样的好处就是，只有我们自己的设备可以通信，别人的UUID来连接是连接不上的，我们也不会连接上别人的设备。&lt;/p&gt;
-&lt;p&gt;当然，你也可以选择&lt;code&gt;well-known&lt;/code&gt;的UUID，这么干的也不少，这样有个缺点就是可能会有干扰，比如别人的设备也正好使用这个UUID起了个server端，那么我们的设备也使用这个UUID去连，就连上了。。。但。。。互发的数据还是不认识哦，没用。。。。&lt;/p&gt;
-&lt;p&gt;本身UUID就是用来标识唯一性的，还是自己生成吧。。。&lt;/p&gt;
-&lt;p&gt;附上，Android developer上的一段&lt;code&gt;hint&lt;/code&gt;:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;About UUID&lt;br&gt;A Universally Unique Identifier (UUID) is a standardized 128-bit format for a string ID used to uniquely identify information. The point of a UUID is that it’s big enough that you can select any random and it won’t clash. In this case, it’s used to uniquely identify your application’s Bluetooth service. To get a UUID to use with your application, you can use one of the many random UUID generators on the web, then initialize a UUID with fromString(String).&lt;br&gt;Hint: If you are connecting to a Bluetooth serial board then try using the well-known SPP UUID 00001101-0000-1000-8000-00805F9B34FB. However if you are connecting to an Android peer then please generate your own unique UUID.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;意思跟我上面提的差不多。。。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      UUID是根据一定算法，计算得到的一长串数字，这个数字的产生使用了多种元素，所以使得这串数字不会重复，每次生成都会产生不一样的序列，所以可以用来作为唯一标识。
-    
-    </summary>
-    
-      <category term="Programmer" scheme="http://dxjia.cn/categories/Programmer/"/>
-    
-    
-      <category term="Android" scheme="http://dxjia.cn/tags/Android/"/>
-    
-      <category term="Bluetooth" scheme="http://dxjia.cn/tags/Bluetooth/"/>
-    
-      <category term="UUID" scheme="http://dxjia.cn/tags/UUID/"/>
     
   </entry>
   

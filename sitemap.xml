@@ -16,104 +16,6 @@
   </url>
   
   <url>
-    <loc>http://dxjia.cn/2016/02/03/add-auto-log-recorder/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/03/08/aosp-default-application-setting/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/01/27/ContentProvider/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/01/29/aosp-m-add-second-rild/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/02/29/baidu-voice-helper/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/01/29/android-bluetooth-uuid/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/03/10/aosp-demo-mode-for-system-ui/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/01/26/hello-world/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/04/06/android-upload-picture-php-receive/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/05/23/ios-app-life-cycle/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/01/27/hexo-write-everywhere/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/03/02/android-default-sms-app/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/01/29/phone-analysis/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://dxjia.cn/2016/05/26/ios-background-executions/</loc>
     
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
@@ -121,35 +23,7 @@
   </url>
   
   <url>
-    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/03/07/python-zip-ftp-upload/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/03/18/read-aosp-source-through-intellij/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/02/05/read-offline-android-api-doc/</loc>
-    
-    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://dxjia.cn/2016/02/02/use-softlink-to-share-code-in-windows/</loc>
+    <loc>http://dxjia.cn/2016/05/23/ios-app-life-cycle/</loc>
     
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     
@@ -170,6 +44,13 @@
   </url>
   
   <url>
+    <loc>http://dxjia.cn/2016/04/06/android-upload-picture-php-receive/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://dxjia.cn/2016/03/25/write-comment-to-apk-file/</loc>
     
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
@@ -177,14 +58,42 @@
   </url>
   
   <url>
-    <loc>http://dxjia.cn/about/index.html</loc>
+    <loc>http://dxjia.cn/2016/03/18/read-aosp-source-through-intellij/</loc>
     
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://dxjia.cn//404.html</loc>
+    <loc>http://dxjia.cn/2016/03/10/aosp-demo-mode-for-system-ui/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/03/08/aosp-default-application-setting/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/03/07/python-zip-ftp-upload/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/03/04/config-signature-in-gradle-for-release-version/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/03/02/android-default-sms-app/</loc>
     
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     
@@ -198,7 +107,98 @@
   </url>
   
   <url>
+    <loc>http://dxjia.cn/2016/02/25/php-require-path-work-around/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/02/05/read-offline-android-api-doc/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/02/03/add-auto-log-recorder/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/02/02/use-softlink-to-share-code-in-windows/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/01/29/phone-analysis/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/01/29/android-bluetooth-uuid/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/01/29/aosp-m-add-second-rild/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/01/27/hexo-write-everywhere/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/01/27/ContentProvider/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/01/26/hello-world/</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn//404.html</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/about/index.html</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://dxjia.cn//search.html</loc>
+    
+    <lastmod>2016-06-24T13:50:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://dxjia.cn/2016/02/29/baidu-voice-helper/</loc>
     
     <lastmod>2016-06-24T13:50:39.000Z</lastmod>
     
